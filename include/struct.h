@@ -1,24 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstiter.c                                       :+:      :+:    :+:   */
+/*   struct.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/25 15:42:54 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/06/21 19:06:24 by mel-yand         ###   ########.fr       */
+/*   Created: 2024/06/21 17:29:40 by mel-yand          #+#    #+#             */
+/*   Updated: 2024/06/24 17:36:27 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef STRUCT_H
+# define STRUCT_H
 
-// void	ft_lstiter(t_list *lst, void (*f)(void *))
-// {
-// 	if (lst == NULL || f == NULL)
-// 		return ;
-// 	while (lst != NULL)
-// 	{
-// 		(*f)(lst->content);
-// 		lst = lst->next;
-// 	}
-// }
+typedef struct s_data
+{
+	char			**path;
+	t_list			*env;
+}	t_data;
+
+#endif

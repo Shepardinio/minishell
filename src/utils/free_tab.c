@@ -1,24 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstiter.c                                       :+:      :+:    :+:   */
+/*   free_tab.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/25 15:42:54 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/06/21 19:06:24 by mel-yand         ###   ########.fr       */
+/*   Created: 2024/06/24 17:04:10 by mel-yand          #+#    #+#             */
+/*   Updated: 2024/06/24 17:06:53 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../../include/minishell.h"
 
-// void	ft_lstiter(t_list *lst, void (*f)(void *))
-// {
-// 	if (lst == NULL || f == NULL)
-// 		return ;
-// 	while (lst != NULL)
-// 	{
-// 		(*f)(lst->content);
-// 		lst = lst->next;
-// 	}
-// }
+void	free_tab(char **tab)
+{
+    int	i;
+
+	i = 0;
+	while (tab[i] != NULL)
+	{
+		free(tab[i]);
+		i++;
+	}
+	free(tab);
+}
