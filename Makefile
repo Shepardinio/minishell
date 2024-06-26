@@ -5,7 +5,7 @@ LIBFT = ./libft/libft.a
 SRC = 	src/main.c\
 		src/builtins/pwd/pwd.c\
 		src/init/init_data.c\
-		src/utils/free_tab.c
+		src/utils/free_fonction.c
 OBJ = $(SRC:.c=.o)
 
 all: $(NAME)
