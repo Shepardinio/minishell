@@ -6,7 +6,7 @@
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 12:58:33 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/06/27 19:18:46 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/06/27 23:24:22 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,21 +19,23 @@ int main(int argc, char **argv, char **env)
 	t_data	data;
 	// int		i = 0;
 	
-	init_data(&data, env);
-	ft_env(data.env, &argv[1]);
-	// ft_putstr_fd("/////////////////////////////////////////////////////////////////////\n", 1);
 	// while (env[i] != NULL)
 	// {
 	// 	ft_putstr_fd(env[i], 1);
 	// 	write(1, "\n", 1);
 	// 	i++;
 	// }
-	// while (data.path[i] != NULL)
+	// ft_putstr_fd("/////////////////////////////////////////////////////////////////////\n", 1);
+	init_data(&data, env);
+	ft_env(data.env, &argv[1]);
+
+	// while (data.env)
 	// {
-	// 	ft_putstr_fd(data.path[i], 1);
-	// 	write(1, "\n", 1);
-	// 	i++;
+	// 	printf("%s=%s\n", data.env->var, data.env->value);
+	// 	data.env = data.env->next;
 	// }
+	// while (data.env->prev != NULL)
+	// 	data.env = data.env->prev;
 	free_all(&data);
 	return (0);
 }
