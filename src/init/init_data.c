@@ -6,7 +6,7 @@
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 17:58:40 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/06/27 23:49:45 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/06/28 16:23:19 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,22 @@ static void	shlvl_up(t_data *data, char *lvl)
 	free(lvlup);
 }
 
-static void	check_pwd_shlvl(t_data *data, int *pwd, int *shlvl)
+static int	set_pwd(t_data *data)
 {
-	printf("pwd = %d shlvl = %d\n", *pwd, *shlvl);
+	char	*cwd;
+	
+	cwd = getcwd(NULL, 0);
+	ft_lstadd_back(&data->env, ft_lstnew("PWD", cwd));
+	free(cwd);
+	return (1);
+}
+
+static void	check_pwd_shlvl(t_data *data, int pwd, int shlvl)
+{
 	if (pwd == 0)
 		ft_lstadd_back(&data->env, ft_lstnew("PWD", getcwd(NULL, 0)));
 	if (shlvl == 0)
-	{
 		ft_lstadd_back(&data->env, ft_lstnew("SHLVL", "1"));
-		printf("SKDJSKFKSF\n");
-	}
 }
 
 static void	init_env(t_data *data, char **env)
@@ -43,28 +49,22 @@ static void	init_env(t_data *data, char **env)
 	i = 0;
 	pwd = 0;
 	shlvl = 0;
-	printf("------------------------->%s\n", env[i]);
-	printf("------------------------->%s\n", env[1]);
-	printf("------------------------->%s\n", env[2]);
 	while (env[i] != NULL)
 	{
 		tmp = ft_split(env[i], '=');
-		if(ft_strncmp(tmp[0], "PWD", 4) == 0)
-		{
-			printf("%s\n", tmp[0]);
-			pwd = 1;
-		}
 		if (ft_strncmp(tmp[0], "SHLVL", 6) == 0)
 		{
 			shlvl_up(data, tmp[1]);
 			shlvl = 1;
 		}
+		else if(ft_strncmp(tmp[0], "PWD", 4) == 0)
+			pwd = set_pwd(data);
 		else if (tmp != NULL)
 			ft_lstadd_back(&data->env, ft_lstnew(tmp[0], tmp[1]));
 		free_tab(tmp);
 		i++;
 	}
-	check_pwd_shlvl(data, &pwd, &shlvl);
+	check_pwd_shlvl(data, pwd, shlvl);
 }
 
 void	init_data(t_data *data, char **env)

@@ -6,7 +6,7 @@
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 17:04:10 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/06/26 20:36:12 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/06/28 16:47:17 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,11 @@ void	free_tab(char **tab)
     int	i;
 
 	i = 0;
-	if (tab == NULL)
-		return ;
-	while (tab[i] != NULL)
-	{
-		free(tab[i]);
-		i++;
-	}
-	free(tab);
+	while (tab && tab[i])
+		free(tab[i++]);
+	if (tab)
+		free(tab);
+	tab = NULL;
 }
 
 void	free_env(t_list **env)
@@ -47,4 +44,16 @@ void	free_all(t_data *data)
 {
 	free_tab(data->path);
 	free_env(&data->env);
+}
+
+int	count_str(char **str)
+{
+	int	i;
+
+	if (!str)
+		return (0);
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
 }
