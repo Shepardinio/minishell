@@ -6,7 +6,7 @@
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 17:04:10 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/06/28 16:47:17 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/06/30 13:47:06 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,18 @@ int	count_str(char **str)
 	while (str[i])
 		i++;
 	return (i);
+}
+
+t_list	*find(t_data *data, char *varname)
+{
+	t_list	*tmp;
+
+	tmp = data->env;
+	while (tmp)
+	{
+		if (ft_strcmp(tmp->var, varname) == 0)
+			return (tmp);
+		tmp = tmp->next;
+	}
+	return (NULL);
 }

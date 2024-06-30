@@ -1,20 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins.h                                         :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/13 13:03:41 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/06/30 14:32:08 by mel-yand         ###   ########.fr       */
+/*   Created: 2024/06/30 13:44:20 by mel-yand          #+#    #+#             */
+/*   Updated: 2024/06/30 13:44:41 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BULTINS_H
-# define BULTINS_H
+#include "libft.h"
 
-void	ft_pwd(void);
-void	ft_env(t_list *env, char **cmd);
-void	ft_cd(t_data *data, char **arg);
-
-#endif
+int	ft_strcmp(const char *s1, const char *s2)
+{
+	if (!s2)
+		return ((unsigned char)(*s1));
+	else if (!s1)
+		return ((unsigned char)(*s2));
+	while ((*s1 || *s2) && *s1 == *s2)
+	{
+		++s1;
+		++s2;
+	}
+	return ((unsigned char)(*s1) - (unsigned char)(*s2));
+}

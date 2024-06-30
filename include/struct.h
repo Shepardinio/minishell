@@ -6,7 +6,7 @@
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 17:29:40 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/06/24 17:36:27 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/06/30 17:03:30 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,9 @@
 
 typedef struct s_data
 {
-	char			**path;
-	t_list			*env;
+	char	**path;
+	t_list	*env;
+	int		status;
 }	t_data;
 
 #endif

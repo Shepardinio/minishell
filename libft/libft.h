@@ -6,7 +6,7 @@
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 17:45:03 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/06/24 16:01:41 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/07/01 01:23:03 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void		ft_putnbr_fd(int n, int fd);
 void		ft_putstr_fd(char *s, int fd);
 void		*ft_calloc(size_t nmemb, size_t size);
 char		**ft_split(char const *s, char c);
+int			ft_strcmp(const char *s1, const char *s2);
 char		*ft_strdup(const char *s);
 void		ft_striteri(char *s, void (*f)(unsigned int, char*));
 char		*ft_strjoin(char *s1, char *s2);
@@ -72,7 +73,7 @@ typedef struct s_list
 void		ft_lstadd_back(t_list **lst, t_list *new);
 void		ft_lstadd_front(t_list **lst, t_list *new);
 // void		ft_lstclear(t_list **lst, void (*del)(void *));
-// void		ft_lstdelone(t_list *lst, void (*del)(void *));
+void		ft_lstdelone(t_list *lst, void (*del)(void *));
 // void		ft_lstiter(t_list *lst, void (*f)(void *));
 t_list		*ft_lstlast(t_list *lst);
 // t_list		*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
