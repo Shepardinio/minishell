@@ -1,31 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/27 16:39:00 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/07/01 22:33:26 by mel-yand         ###   ########.fr       */
+/*   Created: 2024/07/01 23:07:53 by mel-yand          #+#    #+#             */
+/*   Updated: 2024/07/01 23:12:31 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/minishell.h"
 
-void	ft_env(t_list *env, char **cmd)
+void	ft_echo(char **arg)
 {
-	if (cmd != NULL && cmd[1] != NULL)
+	int	i;
+
+	i = 1;
+	if (arg[1] == NULL)
 	{
-		ft_putstr_fd("env does not take arguments\n", 2);
-		/*Change status to 127*/
-		return ;
-	}
-	while (env)
-	{
-		ft_putstr_fd(env->var, 1);
-		ft_putstr_fd("=", 1);
-		ft_putstr_fd(env->value, 1);
-		ft_putstr_fd("\n", 1);
-		env = env->next;
+		ft_putchar_fd('\n', 1);
 	}
 }
