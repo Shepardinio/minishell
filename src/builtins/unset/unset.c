@@ -6,13 +6,13 @@
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 22:50:47 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/07/01 22:54:49 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/07/02 17:30:08 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/minishell.h"
 
-void	ft_unset(t_data *data, char **arg)
-{
+// void	ft_unset(t_data *data, char **arg)
+// {
 	
-}
+// }

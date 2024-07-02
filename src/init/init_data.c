@@ -6,7 +6,7 @@
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 17:58:40 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/06/30 19:25:14 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/07/02 14:11:16 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static void	init_env(t_data *data, char **env)
 	while (env[i] != NULL)
 	{
 		tmp = ft_split(env[i], '=');
-		printf("%s\n", tmp[0]);
+		// printf("%s\n", tmp[0]);
 		if (ft_strncmp(tmp[0], "SHLVL", 6) == 0)
 		{
 			shlvl_up(data, tmp[1]);

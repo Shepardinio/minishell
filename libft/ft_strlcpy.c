@@ -6,7 +6,7 @@
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 13:40:52 by mel-yand          #+#    #+#             */
-/*   Updated: 2023/11/28 15:08:43 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/07/02 15:29:24 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 {
 	size_t	i;
 
+	if (!dst || !src)
+		return (0);
 	i = 0;
 	if (size)
 	{

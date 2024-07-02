@@ -6,7 +6,7 @@
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 17:04:10 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/06/30 13:47:06 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/07/02 17:16:40 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ t_list	*find(t_data *data, char *varname)
 	tmp = data->env;
 	while (tmp)
 	{
-		if (ft_strcmp(tmp->var, varname) == 0)
+		if (ft_strncmp(tmp->var, varname, ft_strlen(varname) + 1) == 0)
 			return (tmp);
 		tmp = tmp->next;
 	}

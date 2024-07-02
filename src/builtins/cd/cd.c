@@ -6,11 +6,20 @@
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 18:50:30 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/06/30 19:23:21 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/07/02 16:56:02 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/minishell.h"
+
+void	print_cd_error(char *path)
+{
+	ft_putstr_fd("Minishell: cd: ", 2);
+	ft_putstr_fd(path, 2);
+	ft_putstr_fd(": ", 2);
+	ft_putstr_fd(strerror(errno), 2);
+	ft_putchar_fd('\n', 2);
+}
 
 void	update_pwd(t_data *data, char *path)
 {
@@ -23,18 +32,14 @@ void	update_pwd(t_data *data, char *path)
 		if (env == NULL)
 			return ;
 		newpwd = getcwd(NULL, 0);
+		if (newpwd == NULL)
+			return (ft_putstr_fd("Error with getcwd\n", 2));
 		free(env->value);
 		env->value = ft_strdup(newpwd);
 		free(newpwd);
 	}
 	else
-	{
-		ft_putstr_fd("Minishell: cd: ", 2);
-		ft_putstr_fd(path, 2);
-		ft_putstr_fd(": ", 2);
-		ft_putstr_fd(strerror(errno), 2);
-		ft_putchar_fd('\n', 2);
-	}
+		print_cd_error(path);
 }
 
 void	update_oldpwd(t_data *data)
@@ -77,6 +82,7 @@ void	cd_home(t_data *data, char *path)
 void	ft_cd(t_data *data, char **arg)
 {
 	char *path;
+	char pwd[4096];
 
 	if (count_str(arg) > 2)
 	{
@@ -90,6 +96,12 @@ void	ft_cd(t_data *data, char **arg)
 	else
 	{
 		data->status = chdir(path) * -1;
+		if ((data->status == 1) || (getcwd(pwd, 4096) == NULL))
+		{
+			print_cd_error(path);
+			data->status = 1;
+			return ;
+		}
 		update_oldpwd(data);
 		update_pwd(data, path);
 	}

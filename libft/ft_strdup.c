@@ -6,7 +6,7 @@
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 13:27:55 by mel-yand          #+#    #+#             */
-/*   Updated: 2023/11/22 11:20:56 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/07/02 15:28:46 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ char	*ft_strdup(const char *s)
 	char	*arr;
 	int		i;
 
+	if (!s)
+		return (NULL);
 	arr = malloc(sizeof(char) * ft_strlen((char *)s) + 1);
 	if (arr == NULL)
 		return (NULL);
