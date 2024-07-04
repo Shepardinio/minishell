@@ -6,7 +6,7 @@
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 23:07:53 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/07/04 00:48:00 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/07/04 17:40:20 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,11 @@ void	ft_echo(char **arg)
 		ft_putchar_fd('\n', 1);
 		return ;
 	}
-	while (ft_strncmp(arg[i++], "-n", 3) == 0)
+	while (arg[i] && ft_strncmp(arg[i], "-n", 3) == 0)
+	{
+		i++;
 		n++;
+	}
 	while (arg[i])
 	{
 		ft_putstr_fd(arg[i], 1);

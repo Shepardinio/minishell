@@ -6,6 +6,7 @@ SRC = 	src/main.c\
 		src/builtins/cd/cd.c\
 		src/builtins/echo/echo.c\
 		src/builtins/env/env.c\
+		src/builtins/export/export.c\
 		src/builtins/pwd/pwd.c\
 		src/builtins/unset/unset.c\
 		src/init/init_data.c\

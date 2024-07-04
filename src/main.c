@@ -6,7 +6,7 @@
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 12:58:33 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/07/03 21:19:35 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/07/04 18:07:44 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ int main(int argc, char **argv, char **env)
 				ft_echo(cmd);
 			if (ft_strcmp(cmd[0], "env") == 0)
 				ft_env(data.env, cmd);
+			if (ft_strcmp(cmd[0], "export") == 0)
+				ft_export(&data, cmd);
 			if (ft_strcmp(cmd[0], "pwd") == 0)
 				ft_pwd();
 			if (ft_strcmp(cmd[0], "unset") == 0)
