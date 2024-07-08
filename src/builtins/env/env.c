@@ -6,7 +6,7 @@
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:39:00 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/07/02 17:14:22 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/07/08 20:47:01 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,13 @@ void	ft_env(t_list *env, char **cmd)
 	}
 	while (env)
 	{
-		ft_putstr_fd(env->var, 1);
-		ft_putstr_fd("=", 1);
-		ft_putstr_fd(env->value, 1);
-		ft_putstr_fd("\n", 1);
+		if (env->value != NULL)
+		{
+			ft_putstr_fd(env->var, 1);
+			ft_putstr_fd("=", 1);
+			ft_putstr_fd(env->value, 1);
+			ft_putstr_fd("\n", 1);
+		}
 		env = env->next;
 	}
 }

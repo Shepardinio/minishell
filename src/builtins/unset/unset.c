@@ -6,7 +6,7 @@
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 22:50:47 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/07/03 19:30:04 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/07/08 20:18:42 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	check_varname(t_data *data, char *varname, int *first)
 {
-	printf("%d\n", *first);
+	// printf("%d\n", *first);
 	if (varname[0] == '_' && varname[1] == '\0')
 		return (1);
 	if (varname[0] != '_' && !ft_isalpha(varname[0]))
