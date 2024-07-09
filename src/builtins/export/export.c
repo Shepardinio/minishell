@@ -6,7 +6,7 @@
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 17:45:22 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/07/08 21:30:07 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/07/09 15:51:48 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	export_var(t_data *data, char *arg)
 		return ;
 	if (is_new_var(data, tmp[0]))
 	{
-		if (empty == 0)
+		if (empty == 0 && tmp[1] == NULL)
 			ft_lstadd_back(&data->env, ft_lstnew(tmp[0], ""));
 		else
 			ft_lstadd_back(&data->env, ft_lstnew(tmp[0], tmp[1]));
