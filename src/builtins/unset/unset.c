@@ -6,7 +6,7 @@
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 22:50:47 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/07/09 15:28:54 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/07/18 03:18:23 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 int	check_varname(t_data *data, char *varname, int *first)
 {
-	// printf("%d\n", *first);
 	if (varname[0] == '_' && varname[1] == '\0')
 		return (1);
 	if (varname[0] != '_' && !ft_isalpha(varname[0]))
@@ -43,6 +42,8 @@ void	del_var(t_data *data, char *varnam, int *first)
 	{
 		if (ft_strncmp(var_env->var, "PATH", 5) == 0)
 			free_tab(data->path);
+		if (var_env == data->env)
+			data->env = var_env->next;
 		ft_lstdelone(var_env, free);
 	}
 	data->status = 0;
