@@ -6,18 +6,47 @@
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 17:29:40 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/06/30 17:03:30 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/07/22 02:56:27 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCT_H
 # define STRUCT_H
 
+typedef struct s_nns
+{
+	char	*name;
+	char	*newstr;
+} t_nns;
+
+typedef struct s_pipeline
+{
+	char	**cmd;
+	char	**infiles;
+	char	**outfiles;
+	char	**outfiles_ext;
+	char	**here_docs;
+	pid_t	pid;
+	int		pipefd[2];
+} t_pipeline;
+
+typedef struct s_all_pipelines
+{
+	t_pipeline **pipelines;
+} t_all_pipelines;
+
+typedef struct s_vector2
+{
+	int i;
+	int j;
+} t_vector2;
+
 typedef struct s_data
 {
-	char	**path;
-	t_list	*env;
-	int		status;
+	char			**path;
+	t_list			*env;
+	int				status;
+	t_all_pipelines	*all_pipes;
 }	t_data;
 
 #endif
