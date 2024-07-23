@@ -1,0 +1,1 @@
+Commande test: cat file1 > file2 < file3 | infile < cat | grep text >> file4 | infile < cat | wc -l | sleep 3 | wc -c > outfile

@@ -6,7 +6,7 @@
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 17:29:40 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/07/22 02:56:27 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/07/23 22:18:33 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ typedef struct s_pipeline
 	char	**here_docs;
 	pid_t	pid;
 	int		pipefd[2];
+	int		in_pipe;
 } t_pipeline;
 
 typedef struct s_all_pipelines
@@ -45,6 +46,7 @@ typedef struct s_data
 {
 	char			**path;
 	t_list			*env;
+	char			**env_array;
 	int				status;
 	t_all_pipelines	*all_pipes;
 }	t_data;

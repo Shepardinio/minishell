@@ -1,5 +1,3 @@
-#include "../include/minishell.h"
-
 int is_token(char c)
 {
 	if (c == '>' || c == '<' || c == -1 || c == -2)

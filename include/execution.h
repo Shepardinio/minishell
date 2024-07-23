@@ -6,13 +6,32 @@
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 17:14:15 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/07/20 18:47:46 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/07/23 21:44:11 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EXECUTION_H
 # define EXECUTION_H
 
+//--------------------------------------------------//
+//					BUILTIN_EXEC					//
+//--------------------------------------------------//
+
+int	is_builtin(char *cmd);
+int	exec_builtins(t_data *data, t_pipeline *node);
+
+//--------------------------------------------------//
+//					INIT_EXEC						//
+//--------------------------------------------------//
+
 void	execution(t_data *data);
+
+//--------------------------------------------------//
+//					UTILS_EXEC						//
+//--------------------------------------------------//
+
+int		count_cmd(t_data *data);
+void	creat_env_char(t_data *data);
+char	*get_cmd_path(t_data *data, char **arg);
 
 #endif

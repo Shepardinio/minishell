@@ -6,7 +6,7 @@
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 17:04:10 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/07/02 17:16:40 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/07/23 19:45:18 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,21 @@ int	count_str(char **str)
 	i = 0;
 	while (str[i])
 		i++;
+	return (i);
+}
+
+int	count_list(t_list *lst)
+{
+	int		i;
+	t_list	*tmp;
+
+	i = 0;
+	tmp = lst;
+	while (tmp)
+	{
+		i++;
+		tmp = tmp->next;
+	}
 	return (i);
 }
 

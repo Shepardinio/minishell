@@ -1,5 +1,32 @@
 #include "../include/minishell.h"
 
+char *quote_parser(char *str)
+{
+	int *quote_indexes;
+	quote_indexes = write_quote_indexes(str);
+	char *parsed_str = generate_str_wo_quotes(str, quote_indexes);
+	return parsed_str;
+}
+
+char **cmd_quote_parser(char *res_str)
+{
+	char **raw_cmds;
+	char *tmp;
+	int i;
+
+	i = 0;
+	raw_cmds = ft_split(res_str,' ');
+	while(raw_cmds[i])
+	{
+		tmp = ft_strdup(raw_cmds[i]);
+		free(raw_cmds[i]);
+		raw_cmds[i] = quote_parser(tmp);
+		free(tmp);
+		i++;
+	}
+	return raw_cmds;
+}
+
 t_pipeline *parser(char *input)
 {
 	t_nns *nns;
@@ -11,7 +38,7 @@ t_pipeline *parser(char *input)
 	pipeline->infiles = tokenization(&nns, '<');
 	pipeline->here_docs = tokenization(&nns, -1);
 	pipeline->outfiles_ext = tokenization(&nns, -2);
-	pipeline->cmd = ft_split(nns->newstr, ' ');
+	pipeline->cmd = cmd_quote_parser(nns->newstr);
 	free(nns->name);
 	free(nns->newstr);
 	free(nns);

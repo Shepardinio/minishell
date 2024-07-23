@@ -6,7 +6,7 @@
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 17:58:40 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/07/03 21:17:59 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/07/23 17:06:01 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ void	init_data(t_data *data, char **env)
 {
 	data->status = 0;
 	data->env = NULL;
+	data->env_array = NULL;
 	data->path = ft_split(getenv("PATH"), ':');
 	
 	if (env && *env)

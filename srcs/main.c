@@ -106,7 +106,6 @@ void free_all_pipelines(t_all_pipelines *all_pipelines)
 	free(all_pipelines);
 }
 
-
 void print_array(char **array, const char *name)
 {
     printf("%s: {", name);
@@ -174,18 +173,6 @@ void print_all_pipelines(const t_all_pipelines *all_pipes)
     }
 }
 
-// int main()
-// {
-// 	char *test = "cat file1 > file2 < file3 | infile < cat | grep text >> file4 | infile < cat | wc -l | sleep 3 | wc -c > outfile";
-// 	char *input = two_signs_handler(test);
-// 	if (input == NULL)
-// 		error_exit();
-// 	t_all_pipelines *all_pipes = pipelines_creator(input);
-// 	free(input);
-// 	printf("%s\n",all_pipes->pipelines[4]->cmd[1]);
-// 	free_all_pipelines(all_pipes);
-// }
-
 int main(int argc, char **argv, char **env)
 {
 	(void)argc;
@@ -204,11 +191,12 @@ int main(int argc, char **argv, char **env)
 			error_exit();
 		data.all_pipes = pipelines_creator(input);
 		free(input);
-		// printf("%s",data.all_pipes->pipelines[1]->cmd[2]);
-		// print_all_pipe(all_pipes);
+		// printf("%s\n",data.all_pipes->pipelines[4]->cmd[1]);
 		print_all_pipelines(data.all_pipes);
-		// execution(&data);
+		execution(&data);
 		free_all_pipelines(data.all_pipes);
 	}
+	// execution(&data);
+	free_all(&data);
 	return (0);
 }

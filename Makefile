@@ -12,7 +12,9 @@ SRC = 	srcs/main.c\
 		src/builtins/unset/unset.c\
 		src/init/init_data.c\
 		src/utils/free_fonction.c\
-		src/executions/exec.c\
+		src/executions/builtin_exec.c\
+		src/executions/init_exec.c\
+		src/executions/utils_exec.c\
 		./srcs/char_checks.c\
 		./srcs/pipeline_parser.c\
 		./srcs/quote_handler.c\

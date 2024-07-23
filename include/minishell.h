@@ -6,7 +6,7 @@
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 13:08:29 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/07/19 17:15:50 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/07/23 20:34:35 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,19 @@
 
 void	init_data(t_data *data, char **env);
 
-////////// UTILS //////////
+//--------------------------------------------------//
+//						UTILS						//
+//--------------------------------------------------//
 
 void	free_tab(char **tab);
 void	free_all(t_data *data);
 int		count_str(char **str);
+int		count_list(t_list *lst);
 t_list	*find(t_data *data, char *varname);
 
-////////// BERKE <3 //////////
+//--------------------------------------------------//
+//						BERKE <3					//
+//--------------------------------------------------//
 
 int is_set(char c);
 int is_token(char c);
@@ -60,5 +65,8 @@ char *two_signs_handler(char *input);
 t_pipeline *pipeline_init();
 t_nns *nns_init(char *input);
 int count_quotes(char *str);
+char *generate_str_wo_quotes(char *str,int *quote_indexes);
+int *write_quote_indexes(char *str);
+char *quote_parser(char *str);
 
 #endif
