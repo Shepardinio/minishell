@@ -180,12 +180,12 @@ int main(int argc, char **argv, char **env)
 	t_data data;
 
 	init_data(&data, env);
-	while (1)
-	{
+	// while (1)
+	// {
 		ft_putstr_fd("Minishell> ", 1);
-		// char *test = ">a < aninfile <'a''a'   secind    < third cat Makefile >b | mem >>outfile > A > B > C > D | cat a >>extendedfile";
-		char *test = get_next_line(0);
-		*ft_strchr(test, '\n') = '\0';
+		char *test = "< file1 cat | cat | cat | cat > outfile";
+		// char *test = get_next_line(0);
+		// *ft_strchr(test, '\n') = '\0';
 		char *input = two_signs_handler(test);
 		if (input == NULL)
 			error_exit();
@@ -195,7 +195,7 @@ int main(int argc, char **argv, char **env)
 		print_all_pipelines(data.all_pipes);
 		execution(&data);
 		free_all_pipelines(data.all_pipes);
-	}
+	// }
 	// execution(&data);
 	free_all(&data);
 	return (0);

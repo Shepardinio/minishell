@@ -6,12 +6,15 @@
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 17:29:40 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/07/23 22:18:33 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/07/24 21:39:08 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCT_H
 # define STRUCT_H
+
+# define READ 0
+# define WRITE 1
 
 typedef struct s_nns
 {
@@ -28,12 +31,11 @@ typedef struct s_pipeline
 	char	**here_docs;
 	pid_t	pid;
 	int		pipefd[2];
-	int		in_pipe;
 } t_pipeline;
 
 typedef struct s_all_pipelines
 {
-	t_pipeline **pipelines;
+	t_pipeline	**pipelines;
 } t_all_pipelines;
 
 typedef struct s_vector2
@@ -49,6 +51,7 @@ typedef struct s_data
 	char			**env_array;
 	int				status;
 	t_all_pipelines	*all_pipes;
+	int				index;
 }	t_data;
 
 #endif

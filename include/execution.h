@@ -6,7 +6,7 @@
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 17:14:15 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/07/23 21:44:11 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/07/24 23:42:10 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,13 @@ void	execution(t_data *data);
 int		count_cmd(t_data *data);
 void	creat_env_char(t_data *data);
 char	*get_cmd_path(t_data *data, char **arg);
+
+//--------------------------------------------------//
+//					UTILS_PIPELINE					//
+//--------------------------------------------------//
+
+void	reset_fd(int *fd_ptr);
+void	close_pipe(int pipe[2]);
+void	close_all_pipe(t_all_pipelines *all_pipes);
 
 #endif

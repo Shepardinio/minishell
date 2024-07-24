@@ -6,7 +6,7 @@
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 19:08:42 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/07/23 21:56:05 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/07/24 23:41:13 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,6 @@ void	exec_cmd(t_data *data, char **arg)
 	char	*cmd;
 
 	cmd = get_cmd_path(data, arg);
-	ft_putstr_fd(cmd, 1);
-	ft_putchar_fd('\n', 1);
 	// if (cmd != NULL && access(cmd, X_OK) == 0)
 	// 	execve(cmd, arg, data->env_array);
 	// if (cmd != NULL && access(cmd, F_OK) == 0)
@@ -49,21 +47,21 @@ void	exec_cmd(t_data *data, char **arg)
 	// ft_putstr_fd("MiniShell: ", 2);
 	// ft_putstr_fd(arg[0], 2);
 	// ft_putstr_fd(": command not found\n", 2);
-	// free(cmd);
+	free(cmd);
 	// // free_exit(data, 127);
 }
 
-void	child(t_data *data, t_pipeline *node)
+void	child(t_data *data)
 {
-	/*FONCTION: CLOSE NO USED*/
 	/*DUP*/
-	if (exec_builtins(data, node) == 1)
+	close_all_pipe(data->all_pipes);
+	if (exec_builtins(data, data->all_pipes->pipelines[data->index]) == 1)
 		return ;
 		// free_exit(data, EXIT_SUCCESS);
-	exec_cmd(data, node->cmd);
+	exec_cmd(data, data->all_pipes->pipelines[data->index]->cmd);
 }
 
-pid_t	start_exec(t_data *data, t_pipeline **node, int index)
+pid_t	start_exec(t_data *data)
 {
 	pid_t	pid;
 
@@ -75,9 +73,9 @@ pid_t	start_exec(t_data *data, t_pipeline **node, int index)
 	}
 	else if (pid == 0)
 	{
-		child(data, node[index]);
+		child(data);
 	}
-	/*CLOSE NO USED*/
+	// close_used_fd(data);
 	return (pid);
 }
 
@@ -92,11 +90,37 @@ int	launch_cmd(t_data *data, int nb_process)
 	i = 0;
 	while (tmp[i] && exit_status != -1 && i < nb_process)
 	{
-		tmp[i]->pid = start_exec(data, tmp, i);
+		data->index = i;
+		tmp[i]->pid = start_exec(data);
 		exit_status = tmp[i]->pid;
 		i++;
 	}
 	return (exit_status);
+}
+
+void	creat_pipe(t_pipeline **node)
+{
+	int	i;
+
+	i = 0;
+	while (node[i])
+	{
+		if (node[i]->outfiles[0] == NULL && node[i]->outfiles_ext[0] == NULL && node[i + 1])
+		{
+			if (pipe(node[i]->pipefd) == -1)
+			{
+				ft_putstr_fd(node[i]->cmd[0], 2);
+				ft_putstr_fd(": Error with pipe creation\n", 2); /*maybe modif*/
+			}
+			printf("pipe creer index %d\n", i);
+		}
+		else
+		{
+			node[i]->pipefd[0] = -1;
+			node[i]->pipefd[1] = -1;
+		}
+		i++;
+	}
 }
 
 void	execution(t_data *data)
@@ -106,9 +130,52 @@ void	execution(t_data *data)
 
 	nb_process = count_cmd(data);
 	creat_env_char(data);
-	/*creat pipe*/
+	creat_pipe(data->all_pipes->pipelines);
 	exit_status = launch_cmd(data, nb_process);
-	if (exit_status != -1)
-		wait_child(data, exit_status, nb_process);
+	// if (exit_status != -1)
+	// 	wait_child(data, exit_status, nb_process);
 	free_tab(data->env_array);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// void	close_unused_inchild(t_data *data)
+// {
+// 	int			i;
+// 	t_pipeline	**tmp;
+
+// 	i = 0;
+// 	tmp = data->all_pipes->pipelines;
+// 	while (tmp[i])
+// 	{
+// 		if ((i + 1) == data->index)
+// 			i++;
+// 		else
+// 		{
+// 			if (tmp[i]->pipefd[0] != -1 && tmp[i]->pipefd[1] != -1)
+// 			{
+// 				close_pipe(tmp[i]->pipefd);
+// 				printf("close Pipe[%d]\n", i);
+// 			}
+// 		}
+// 		i++;
+// 	}
+// }

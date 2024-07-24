@@ -15,6 +15,7 @@ SRC = 	srcs/main.c\
 		src/executions/builtin_exec.c\
 		src/executions/init_exec.c\
 		src/executions/utils_exec.c\
+		src/executions/utils_pipeline.c\
 		./srcs/char_checks.c\
 		./srcs/pipeline_parser.c\
 		./srcs/quote_handler.c\
