@@ -18,14 +18,13 @@ t_nns *nns_init(char *input)
 t_pipeline *pipeline_init()
 {
 	t_pipeline *pipeline;
-	pipeline = malloc(sizeof(t_pipeline));
+
+	pipeline = NULL;
+	pipeline = malloc(sizeof(t_pipeline)); /*BERKE*/
 	if (pipeline == NULL)
 		return NULL;
-	pipeline->cmd = NULL;
-	pipeline->infiles = NULL;
-	pipeline->outfiles = NULL;
-	pipeline->outfiles_ext = NULL;
-	pipeline->here_docs = NULL;
+	// ft_memset(pipeline, 0, sizeof(t_pipeline));
+	*pipeline = (t_pipeline){0};
 	return pipeline;
 }
 

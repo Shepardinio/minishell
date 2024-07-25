@@ -6,7 +6,7 @@
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 19:08:42 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/07/24 23:41:13 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/07/25 17:07:04 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,18 @@ void	wait_child(t_data *data, pid_t exit_status, int nb_process)
 {
 	int		status;
 	pid_t	child_pid;
+	int		i;
 	
-	while (nb_process)
+	i = 0;
+	while (i < nb_process)
 	{
-		child_pid = waitpid(exit_status, &status, 0);
+		child_pid = waitpid(data->all_pipes->pipelines[i]->pid, &status, 0);
 		if (child_pid == exit_status)
 		{
 			if (WIFEXITED(status))
 				data->status = WEXITSTATUS(status);
 		}
-		nb_process--;
+		i++;
 	}
 }
 
@@ -75,7 +77,6 @@ pid_t	start_exec(t_data *data)
 	{
 		child(data);
 	}
-	// close_used_fd(data);
 	return (pid);
 }
 
@@ -132,8 +133,9 @@ void	execution(t_data *data)
 	creat_env_char(data);
 	creat_pipe(data->all_pipes->pipelines);
 	exit_status = launch_cmd(data, nb_process);
-	// if (exit_status != -1)
-	// 	wait_child(data, exit_status, nb_process);
+	close_all_pipe(data->all_pipes);
+	if (exit_status != -1)
+		wait_child(data, exit_status, nb_process);
 	free_tab(data->env_array);
 }
 

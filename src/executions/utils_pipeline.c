@@ -6,7 +6,7 @@
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 20:15:46 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/07/24 23:43:29 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/07/25 15:29:56 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ void	close_all_pipe(t_all_pipelines *all_pipes)
 	i = 0;
 	while (all_pipes->pipelines[i])
 	{
-		close_pipe(all_pipes->pipelines[i]->pipefd[READ]);
-        close_pipe(all_pipes->pipelines[i]->pipefd[WRITE]);
-        i++;
+		close_pipe(&all_pipes->pipelines[i]->pipefd[READ]);
+		close_pipe(&all_pipes->pipelines[i]->pipefd[WRITE]);
+		i++;
 	}
 }
