@@ -23,8 +23,8 @@ t_pipeline *pipeline_init()
 	pipeline = malloc(sizeof(t_pipeline)); /*BERKE*/
 	if (pipeline == NULL)
 		return NULL;
-	// ft_memset(pipeline, 0, sizeof(t_pipeline));
-	*pipeline = (t_pipeline){0};
+	ft_memset(pipeline, 0, sizeof(t_pipeline));
+	// *pipeline = (t_pipeline){0};
 	return pipeline;
 }
 
@@ -182,7 +182,7 @@ int main(int argc, char **argv, char **env)
 	// while (1)
 	// {
 		ft_putstr_fd("Minishell> ", 1);
-		char *test = "< file1 cat | cat | cat | cat > outfile";
+		char *test = "< file1 cat > a > b > c > d < file2";
 		// char *test = get_next_line(0);
 		// *ft_strchr(test, '\n') = '\0';
 		char *input = two_signs_handler(test);

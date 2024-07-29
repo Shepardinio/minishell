@@ -6,7 +6,7 @@
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 19:08:42 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/07/25 17:07:04 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/07/29 02:22:52 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,31 +99,6 @@ int	launch_cmd(t_data *data, int nb_process)
 	return (exit_status);
 }
 
-void	creat_pipe(t_pipeline **node)
-{
-	int	i;
-
-	i = 0;
-	while (node[i])
-	{
-		if (node[i]->outfiles[0] == NULL && node[i]->outfiles_ext[0] == NULL && node[i + 1])
-		{
-			if (pipe(node[i]->pipefd) == -1)
-			{
-				ft_putstr_fd(node[i]->cmd[0], 2);
-				ft_putstr_fd(": Error with pipe creation\n", 2); /*maybe modif*/
-			}
-			printf("pipe creer index %d\n", i);
-		}
-		else
-		{
-			node[i]->pipefd[0] = -1;
-			node[i]->pipefd[1] = -1;
-		}
-		i++;
-	}
-}
-
 void	execution(t_data *data)
 {
 	int	nb_process;
@@ -132,6 +107,7 @@ void	execution(t_data *data)
 	nb_process = count_cmd(data);
 	creat_env_char(data);
 	creat_pipe(data->all_pipes->pipelines);
+	open_file(data);
 	exit_status = launch_cmd(data, nb_process);
 	close_all_pipe(data->all_pipes);
 	if (exit_status != -1)
