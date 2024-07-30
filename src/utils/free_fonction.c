@@ -6,22 +6,25 @@
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 17:04:10 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/07/23 19:45:18 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/07/30 01:05:40 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	free_tab(char **tab)
+void free_tab(char **tab)
 {
-    int	i;
+    int i = 0;
 
-	i = 0;
-	while (tab && tab[i])
-		free(tab[i++]);
 	if (tab)
+	{
+		while (tab[i])
+		{
+			free(tab[i]);
+			i++;
+		}
 		free(tab);
-	tab = NULL;
+    }
 }
 
 void	free_env(t_list **env)

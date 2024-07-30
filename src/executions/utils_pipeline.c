@@ -6,7 +6,7 @@
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 20:15:46 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/07/29 02:16:26 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/07/29 23:55:49 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,10 @@ void	close_all_pipe(t_all_pipelines *all_pipes)
 	while (all_pipes->pipelines[i])
 	{
 		close_pipe(all_pipes->pipelines[i]->pipefd);
+		if (all_pipes->pipelines[i]->infile_fd != -1)
+			reset_fd(&all_pipes->pipelines[i]->infile_fd);
+		if (all_pipes->pipelines[i]->outfile_fd != -1)
+			reset_fd(&all_pipes->pipelines[i]->outfile_fd);
 		i++;
 	}
 }

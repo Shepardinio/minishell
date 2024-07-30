@@ -6,7 +6,7 @@
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 19:08:42 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/07/29 02:22:52 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/07/30 02:23:52 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,30 +36,31 @@ void	exec_cmd(t_data *data, char **arg)
 	char	*cmd;
 
 	cmd = get_cmd_path(data, arg);
-	// if (cmd != NULL && access(cmd, X_OK) == 0)
-	// 	execve(cmd, arg, data->env_array);
-	// if (cmd != NULL && access(cmd, F_OK) == 0)
-	// {
-	// 	ft_putstr_fd("MiniShell: ", 2);
-	// 	ft_putstr_fd(arg[0], 2);
-	// 	ft_putstr_fd(": Permission denied\n", 2);
-	// 	free(cmd);
-	// 	// free_exit(data, 126);
-	// }
-	// ft_putstr_fd("MiniShell: ", 2);
-	// ft_putstr_fd(arg[0], 2);
-	// ft_putstr_fd(": command not found\n", 2);
-	free(cmd);
-	// // free_exit(data, 127);
+	if (cmd != NULL && access(cmd, X_OK) == 0)
+		execve(cmd, arg, data->env_array);
+	if (cmd != NULL && access(cmd, F_OK) == 0)
+	{
+		ft_putstr_fd("MiniShell: ", 2);
+		ft_putstr_fd(arg[0], 2);
+		ft_putstr_fd(": Permission denied\n", 2);
+		free(cmd);
+		// free_exit(data, 126);
+	}
+	ft_putstr_fd("MiniShell: ", 2);
+	ft_putstr_fd(arg[0], 2);
+	ft_putstr_fd(": command not found\n", 2);
+	// free_exit(data, 127);
 }
 
 void	child(t_data *data)
 {
-	/*DUP*/
+	if (dup2(data->all_pipes->pipelines[data->index]->infile_fd, READ) == -1)
+		return (perror("Minishell: Error"));
+	if (dup2(data->all_pipes->pipelines[data->index]->outfile_fd, WRITE) == -1)
+		return (perror("Minishell: Error"));
 	close_all_pipe(data->all_pipes);
 	if (exec_builtins(data, data->all_pipes->pipelines[data->index]) == 1)
 		return ;
-		// free_exit(data, EXIT_SUCCESS);
 	exec_cmd(data, data->all_pipes->pipelines[data->index]->cmd);
 }
 
@@ -113,47 +114,5 @@ void	execution(t_data *data)
 	if (exit_status != -1)
 		wait_child(data, exit_status, nb_process);
 	free_tab(data->env_array);
+	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// void	close_unused_inchild(t_data *data)
-// {
-// 	int			i;
-// 	t_pipeline	**tmp;
-
-// 	i = 0;
-// 	tmp = data->all_pipes->pipelines;
-// 	while (tmp[i])
-// 	{
-// 		if ((i + 1) == data->index)
-// 			i++;
-// 		else
-// 		{
-// 			if (tmp[i]->pipefd[0] != -1 && tmp[i]->pipefd[1] != -1)
-// 			{
-// 				close_pipe(tmp[i]->pipefd);
-// 				printf("close Pipe[%d]\n", i);
-// 			}
-// 		}
-// 		i++;
-// 	}
-// }
