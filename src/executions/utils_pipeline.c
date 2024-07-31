@@ -6,7 +6,7 @@
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 20:15:46 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/07/29 23:55:49 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/07/30 20:03:44 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	creat_pipe(t_pipeline **node)
 				ft_putstr_fd(node[i]->cmd[0], 2);
 				ft_putstr_fd(": Error with pipe creation\n", 2); /*maybe modif*/
 			}
-			printf("pipe creer index %d\n", i);
+			// printf("pipe creer index %d\n", i);
 		}
 		else
 		{
