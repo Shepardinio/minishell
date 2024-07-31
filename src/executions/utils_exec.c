@@ -6,7 +6,7 @@
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 20:23:24 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/07/30 02:15:32 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/07/31 18:48:02 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,15 +42,14 @@ void	creat_env_char(t_data *data)
 	i = 0;
 	while (tmp_env)
 	{
-		var_tmp = ft_strjoin("=",tmp_env->value);
-		// if (!var_tmp)
-		// 	return (free_tab(env_array));
-		env_array[i] = ft_strjoin(tmp_env->var, var_tmp);
-		free(var_tmp);
-		// if (!env_array)
-		// 	return (free_tab(env_array));
+		if (tmp_env->value != NULL)
+		{
+			var_tmp = ft_strjoin("=",tmp_env->value);
+			env_array[i] = ft_strjoin(tmp_env->var, var_tmp);
+			free(var_tmp);
+			i++;
+		}
 		tmp_env = tmp_env->next;
-		i++;
 	}
 	env_array[i] = NULL;
 	data->env_array = env_array;

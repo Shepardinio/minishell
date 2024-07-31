@@ -6,7 +6,7 @@
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 19:08:42 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/07/30 02:23:52 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/07/31 20:25:10 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void	exec_cmd(t_data *data, char **arg)
 
 void	child(t_data *data)
 {
+	printf("AVANT DUP2: cmd = %s\n stdin = %d\n stfout = %d\n", data->all_pipes->pipelines[data->index]->cmd[0],data->all_pipes->pipelines[data->index]->infile_fd, data->all_pipes->pipelines[data->index]->outfile_fd);
 	if (dup2(data->all_pipes->pipelines[data->index]->infile_fd, READ) == -1)
 		return (perror("Minishell: Error"));
 	if (dup2(data->all_pipes->pipelines[data->index]->outfile_fd, WRITE) == -1)
@@ -109,6 +110,7 @@ void	execution(t_data *data)
 	creat_env_char(data);
 	creat_pipe(data->all_pipes->pipelines);
 	open_file(data);
+	std_handler(data->all_pipes->pipelines, nb_process);
 	exit_status = launch_cmd(data, nb_process);
 	close_all_pipe(data->all_pipes);
 	if (exit_status != -1)

@@ -6,7 +6,7 @@
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 02:23:28 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/07/30 02:27:00 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/07/31 20:29:31 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,12 @@ void	open_infile(t_pipeline *node)
 		filepath = NULL;
 		fd = -1;
 		filepath = get_pathfile(node->infiles[i]);
-		// printf("path_in %s\n", filepath);
-		// printf("fd_in init = %d\n", fd);
+		printf("path_in %s\n", filepath);
+		printf("fd_in init = %d\n", fd);
 		if (access(filepath, R_OK) == 0)
 		{
 			fd = open(filepath, O_RDONLY);
-			// printf("fd0_in = %d\n", fd);
+			printf("fd0_in = %d\n", fd);
 			if (node->infiles[i + 1] == NULL && fd != -1)
 				node->infile_fd = fd;
 			else
@@ -78,12 +78,12 @@ void	open_outfile(t_pipeline *node)
 		filepath = NULL;
 		fd = -1;
 		filepath = get_pathfile(node->outfiles[i]);
-		// printf("path_out %s\n", filepath);
-		// printf("fd_out init = %d\n", fd);
+		printf("path_out %s\n", filepath);
+		printf("fd_out init = %d\n", fd);
 		if (access(filepath, W_OK) == 0 || access(filepath, F_OK) == -1)
 		{
 			fd = open(filepath, O_WRONLY | O_CREAT | O_TRUNC, 0666);
-			// printf("fd0_out = %d\n", fd);
+			printf("fd0_out = %d\n", fd);
 			if (node->outfiles[i + 1] == NULL && fd != -1)
 				node->outfile_fd = fd;
 			else
@@ -133,17 +133,17 @@ void	open_file(t_data *data)
 	i = 0;
 	while (data->all_pipes->pipelines[i])
 	{
-		if (data->all_pipes->pipelines[i]->infiles != NULL)
+		if (data->all_pipes->pipelines[i]->infiles[0] != NULL)
 		{
 			open_infile(data->all_pipes->pipelines[i]);
-			// printf("fd1_in = %d\n", data->all_pipes->pipelines[i]->infile_fd);
+			printf("fd1_in = %d\n", data->all_pipes->pipelines[i]->infile_fd);
 		}
-		if (data->all_pipes->pipelines[i]->outfiles != NULL)
+		if (data->all_pipes->pipelines[i]->outfiles[0] != NULL)
 		{
 			open_outfile(data->all_pipes->pipelines[i]);
-			// printf("fd1_out = %d\n", data->all_pipes->pipelines[i]->outfile_fd);
+			printf("fd1_out = %d\n", data->all_pipes->pipelines[i]->outfile_fd);
 		}
-		if (data->all_pipes->pipelines[i]->outfiles_ext != NULL)
+		if (data->all_pipes->pipelines[i]->outfiles_ext[0] != NULL)
 		{
 			open_outfile_ext(data->all_pipes->pipelines[i]);
 			// printf("fd1_out_ext = %d\n", data->all_pipes->pipelines[i]->outfile_fd);

@@ -1,3 +1,29 @@
 flag test : valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --trace-children=yes
 cat file1 > file2 < file3 | infile < cat | grep text >> file4 | infile < cat | wc -l | wc -c > outfile
 >a < aninfile <'a''a'   secind    < third cat Makefile >b | mem >>outfile > A > B > C > D | cat a >>extendedfile
+Pipeline 0:
+Command: {"cat"}
+Infiles: {"Makefile"}
+Outfiles: {}
+Outfiles Ext: {}
+Here Docs: {}
+
+Pipeline 1:
+Command: {"wc"}
+Infiles: {}
+Outfiles: {"b"}
+Outfiles Ext: {}
+Here Docs: {}
+
+pipe creer index 0
+pipe0=3, pipe1=4
+path_in /home/mel-yand/42/Ghub/minishell/Makefile
+fd_in init = -1
+fd0_in = 5
+fd1_in = 5
+fd1_out = 0
+fd1_in = 0
+path_out /home/mel-yand/42/Ghub/minishell/b
+fd_out init = -1
+fd0_out = 6
+fd1_out = 6

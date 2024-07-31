@@ -182,7 +182,7 @@ int main(int argc, char **argv, char **env)
 	// while (1)
 	// {
 		ft_putstr_fd("Minishell> ", 1);
-		char *test = "env > a | cat a | wc > b";
+		char *test = "< Makefile cat | wc -l | wc -c > b";
 		// char *test = get_next_line(0);
 		// *ft_strchr(test, '\n') = '\0';
 		char *input = two_signs_handler(test);
