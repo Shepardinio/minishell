@@ -6,7 +6,7 @@
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 20:15:46 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/07/31 20:51:08 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/08/02 15:55:17 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,16 +73,16 @@ void	std_handler(t_pipeline **node, int nb_process)
 	int	i;
 
 	i = 0;
-	if (node[i] && (node[i]->pipefd[0] != -1 && node[i]->pipefd[1] != -1))
-		node[i]->outfile_fd = node[i]->pipefd[WRITE];
-	i++;
+	// if (node[i] && (node[i]->pipefd[0] != -1 && node[i]->pipefd[1] != -1))
+	// 	node[i]->outfile_fd = node[i]->pipefd[WRITE];
+	// i++;
 	while (node[i])
 	{
-		if (node[i - 1]->pipefd[0] != -1)
+		if (i != 0 && node[i - 1]->pipefd[0] != -1)
 			node[i]->infile_fd = node[i - 1]->pipefd[READ];
 		if(i != nb_process - 1)
 		{
-			if (node[i + 1]->pipefd[0] != -1 && node[i + 1]->pipefd[1] != -1)
+			if (node[i]->pipefd[0] != -1 && node[i]->pipefd[1] != -1)
 				node[i]->outfile_fd = node[i]->pipefd[WRITE];
 		}
 		i++;

@@ -6,7 +6,7 @@
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 17:14:15 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/07/31 20:25:56 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/08/02 23:55:59 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	execution(t_data *data);
 
 int		count_cmd(t_data *data);
 void	creat_env_char(t_data *data);
+char	*get_cmd_path_2(char **arg);
 char	*get_cmd_path(t_data *data, char **arg);
 
 //--------------------------------------------------//

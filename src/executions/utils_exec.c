@@ -6,7 +6,7 @@
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 20:23:24 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/07/31 18:48:02 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/08/02 23:56:50 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,28 @@ void	creat_env_char(t_data *data)
 	data->env_array = env_array;
 }
 
+char	*get_cmd_path_2(char **arg)
+{
+	char	*pwd;
+	char	*tmp;
+	char	*tmp_path;
+
+	tmp_path = NULL;
+	if (arg[0] == NULL)
+		return (NULL);
+	else if (arg[0][0] == '/')
+		return (ft_strdup(arg[0]));
+	else if (arg[0][0] == '.')
+	{
+		pwd = getcwd(NULL, 0);
+		tmp = ft_strjoin("/", arg[0]);
+		tmp_path = ft_strjoin(pwd, tmp);
+		free(pwd);
+		free(tmp);
+	}
+	return (tmp_path);
+}
+
 char	*get_cmd_path(t_data *data, char **arg)
 {
 	int		i;
@@ -62,6 +84,8 @@ char	*get_cmd_path(t_data *data, char **arg)
 	char	*tmp_path;
 
 	i = 0;
+	if (arg == NULL || arg[0][0] == '/' || arg[0][0] == '.')
+		return (get_cmd_path_2(arg));
 	cmd = arg[0];
 	if (access(cmd, F_OK | X_OK) == 0)
 		return (cmd);
