@@ -6,7 +6,7 @@
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 19:08:42 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/07/31 20:25:10 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/08/04 20:21:00 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,15 @@ void	wait_child(t_data *data, pid_t exit_status, int nb_process)
 	}
 }
 
+void	free_exit(t_data *data, int err)
+{
+	free_tab(data->path);
+	free_env(&data->env);
+	free_tab(data->env_array);
+	free_all_pipelines(data->all_pipes);
+	exit(err);
+}
+
 void	exec_cmd(t_data *data, char **arg)
 {
 	char	*cmd;
@@ -44,12 +53,12 @@ void	exec_cmd(t_data *data, char **arg)
 		ft_putstr_fd(arg[0], 2);
 		ft_putstr_fd(": Permission denied\n", 2);
 		free(cmd);
-		// free_exit(data, 126);
+		free_exit(data, 126);
 	}
 	ft_putstr_fd("MiniShell: ", 2);
 	ft_putstr_fd(arg[0], 2);
 	ft_putstr_fd(": command not found\n", 2);
-	// free_exit(data, 127);
+	free_exit(data, 127);
 }
 
 void	child(t_data *data)

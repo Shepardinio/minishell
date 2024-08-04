@@ -18,12 +18,17 @@ t_nns *nns_init(char *input)
 t_pipeline *pipeline_init()
 {
 	t_pipeline *pipeline;
-
-	pipeline = NULL;
-	pipeline = malloc(sizeof(t_pipeline)); /*BERKE*/
+	pipeline = malloc(sizeof(t_pipeline));
 	if (pipeline == NULL)
 		return NULL;
-	ft_memset(pipeline, 0, sizeof(t_pipeline));
+	pipeline->cmd = NULL;
+	pipeline->infiles = NULL;
+	pipeline->outfiles = NULL;
+	pipeline->outfiles_ext = NULL;
+	pipeline->here_docs = NULL;
+	pipeline->infile_fd = 0;
+	pipeline->outfile_fd = 1;
+	// ft_memset(pipeline, 0, sizeof(t_pipeline));
 	// *pipeline = (t_pipeline){0};
 	return pipeline;
 }
@@ -182,7 +187,7 @@ int main(int argc, char **argv, char **env)
 	// while (1)
 	// {
 		ft_putstr_fd("Minishell> ", 1);
-		char *test = "< Makefile cat | wc -l | wc -c | wc > b";
+		char *test = "< Makefile cat | wc -l | wc -c | wc";
 		// char *test = get_next_line(0);
 		// *ft_strchr(test, '\n') = '\0';
 		char *input = two_signs_handler(test);
