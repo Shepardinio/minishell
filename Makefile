@@ -1,44 +1,51 @@
 NAME = minishell
-CC = cc
-CFLAGS = -Wall -Werror -Wextra -g3
-LIBFT = ./libft/libft.a
-SRC = 	srcs/main.c\
-		src/builtins/cd/cd.c\
-		src/builtins/echo/echo.c\
-		src/builtins/env/env.c\
-		src/builtins/export/export.c\
-		src/builtins/export/export_utils.c\
-		src/builtins/pwd/pwd.c\
-		src/builtins/unset/unset.c\
-		src/init/init_data.c\
-		src/utils/free_fonction.c\
-		src/executions/builtin_exec.c\
-		src/executions/file_handler.c\
-		src/executions/init_exec.c\
-		src/executions/utils_exec.c\
-		src/executions/utils_pipeline.c\
-		./srcs/char_checks.c\
-		./srcs/pipeline_parser.c\
-		./srcs/quote_handler.c\
-		./srcs/str_manipulations.c\
-		./srcs/tokenization.c
-OBJ = $(SRC:.c=.o)
+SRCS = ./srcs/main.c  ./srcs/char_checks.c ./srcs/pipeline_parser.c ./srcs/quote_handler.c ./srcs/str_manipulations.c ./srcs/tokenization.c ./srcs/error_check.c ./srcs/expand_vars.c  ./srcs/ft_cmd_split.c ./srcs/free_all_pipelines.c  \
+	   srcs/builtins/cd/cd.c\
+		srcs/builtins/echo/echo.c\
+		srcs/builtins/env/env.c\
+		srcs/builtins/export/export.c\
+		srcs/builtins/export/export_utils.c\
+		srcs/builtins/pwd/pwd.c\
+		srcs/builtins/unset/unset.c\
+		srcs/init/init_data.c\
+		srcs/utils/free_fonction.c\
+		srcs/executions/builtin_exec.c\
+		srcs/executions/file_handler.c\
+		srcs/executions/init_exec.c\
+		srcs/executions/utils_exec.c\
+		srcs/executions/utils_pipeline.c
+OBJS_DIR = ./objs
+OBJS = $(SRCS:./srcs/%.c=$(OBJS_DIR)/%.o)
+LIBFT = ./Libft/libft.a
+CC = gcc
+CFLAGS = -Wall -Werror -Wextra
+RM = rm -rf
 
-all: $(NAME)
+GREEN = \033[0;92m
+BLUE = \033[0;94m
 
-$(NAME): $(OBJ)
-	$(MAKE) -C ./libft
-	$(CC) $(CFLAGS) -lm $(OBJ) $(LIBFT) -o $(NAME) -g
+all: makelibs $(NAME)
 
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+makelibs:
+	@make bonus -C ./Libft
+	@echo "$(BLUE)**libft compiled"
+
+$(OBJS_DIR):
+	@mkdir -p $(OBJS_DIR)
+
+$(OBJS_DIR)/%.o: ./srcs/%.c | $(OBJS_DIR)
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+$(NAME): $(OBJS)
+	@$(CC) $(OBJS) $(LIBFT) -lreadline -o $(NAME)
+	@echo "$(GREEN)minishell compiled"
 
 clean:
-	$(MAKE) fclean -C ./libft
-	$(MAKE) clean -C ./libft
-	/bin/rm -f $(OBJ)
+	$(RM) $(OBJS_DIR)
+	@make clean -C ./Libft
 
 fclean: clean
-	/bin/rm -f $(NAME)
+	$(RM) $(NAME)
+	@make fclean -C ./Libft
 
 re: fclean all

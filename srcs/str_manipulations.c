@@ -1,4 +1,4 @@
-#include "../include/minishell.h"
+#include "../includes/minishell.h"
 
 char *cut_str(char *input, int i, int j)
 {
@@ -47,4 +47,16 @@ char *delete_part(char *input, int i, int j,int l)
 	}
 	newstr[k] = '\0';
 	return newstr;
+}
+
+int is_exit(char *str)
+{
+	int len;
+
+	if (str == NULL)
+		return 1;
+	len = ft_strlen(str);
+	if (len != 4)
+		return 1;
+	return (ft_strncmp(str,"exit",4));
 }

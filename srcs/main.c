@@ -1,4 +1,4 @@
-#include "../include/minishell.h"
+#include "../includes/minishell.h"
 
 #include <stdio.h>
 t_nns *nns_init(char *input)
@@ -28,8 +28,6 @@ t_pipeline *pipeline_init()
 	pipeline->here_docs = NULL;
 	pipeline->infile_fd = 0;
 	pipeline->outfile_fd = 1;
-	// ft_memset(pipeline, 0, sizeof(t_pipeline));
-	// *pipeline = (t_pipeline){0};
 	return pipeline;
 }
 
@@ -37,24 +35,27 @@ char *two_signs_handler(char *input)
 {
 	int i;
 	char *new_input;
-
-	if (input[0] == '\0')
-		return NULL;
+	int q_type;
 	new_input = ft_strdup(input);
-	if (new_input == NULL)
+
+	q_type = 0;
+	if (!new_input)
 		return NULL;
 	i = 0;
 	while (new_input[i+1])
 	{
-		if (new_input[i] == '<' && new_input[i+1] == '<')
+		q_type = quote_check(new_input[i],q_type);
+		if (new_input[i] == '<' && new_input[i+1] == '<' && q_type != 1)
 		{
 			new_input[i] = -1;
 			new_input[i+1] = ' ';
-		}else if (new_input[i] == '>' && new_input[i+1] == '>')
+		}else if (new_input[i] == '>' && new_input[i+1] == '>' && q_type != 1)
 		{
 			new_input[i] = -2;
 			new_input[i+1] = ' ';
 		}
+		else if (new_input[i] == '$' && q_type != 1)
+			new_input[i] = -3;
 		i++;
 	}
 	return (new_input);
@@ -65,142 +66,128 @@ void error_exit()
 	exit(-1);
 }
 
-void free_pipeline(t_pipeline *pipeline)
+void print_pipelines(t_all_pipelines *all_pipelines)
 {
-	int i;
-
-	i = 0;
-	while(pipeline->cmd[i])
-		free(pipeline->cmd[i++]);
-	free(pipeline->cmd);
-	i = 0;
-	while (pipeline->infiles[i])
-		free(pipeline->infiles[i++]);
-	free(pipeline->infiles);
-	i = 0;
-	while (pipeline->outfiles[i])
-		free(pipeline->outfiles[i++]);
-	free(pipeline->outfiles);
-	i = 0;
-	while (pipeline->outfiles_ext[i])
-		free(pipeline->outfiles_ext[i++]);
-	free(pipeline->outfiles_ext);
-	i = 0;
-	while (pipeline->here_docs[i])
-		free(pipeline->here_docs[i++]);
-	free(pipeline->here_docs);
-	free(pipeline);
-}
-
-void free_all_pipelines(t_all_pipelines *all_pipelines)
-{
-	int i;
-
-	i = 0;
-	if (!all_pipelines)
-		return ;
-	if (!all_pipelines->pipelines)
-		return ;
-	while (all_pipelines->pipelines[i] != NULL)
+	int i = 0;
+	int j = 0;
+	while (all_pipelines->pipelines[i])
 	{
-			free_pipeline(all_pipelines->pipelines[i]);
-			i++;
+		j = 0;
+		printf("---- pipeline - %d ------  \n", i);
+		printf("cmds \n");
+		while (all_pipelines->pipelines[i]->cmd[j])
+		{
+			printf("%s\n", all_pipelines->pipelines[i]->cmd[j]);
+			j++;
+		}
+		printf("\n");
+		j = 0;
+		printf("here_docs \n");
+		while (all_pipelines->pipelines[i]->here_docs[j])
+		{
+			printf("%s\n", all_pipelines->pipelines[i]->here_docs[j]);
+			j++;
+		}
+		j = 0;
+		printf("\n");
+		printf("infiles \n");
+		while (all_pipelines->pipelines[i]->infiles[j])
+		{
+			printf("%s\n", all_pipelines->pipelines[i]->infiles[j]);
+			j++;
+		}
+		j = 0;
+		printf("\n");
+		printf("outfiles \n");
+		while (all_pipelines->pipelines[i]->outfiles[j])
+		{
+			printf("%s\n", all_pipelines->pipelines[i]->outfiles[j]);
+			j++;
+		}
+		i++;
+		printf("--------------------\n");
 	}
-	free(all_pipelines->pipelines);
-	free(all_pipelines);
 }
 
-void print_array(char **array, const char *name)
+int input_quote_valid(char *input)
 {
-    printf("%s: {", name);
-    if (array != NULL)
-    {
-        for (int i = 0; array[i] != NULL; ++i)
-        {
-            printf("\"%s\"", array[i]);
-            if (array[i + 1] != NULL)
-                printf(", ");
-        }
-    }
-    printf("}\n");
-}
+	int i;
+	int q_type;
 
-// Fonction pour afficher le contenu de t_pipeline
-void print_pipeline(const t_pipeline *pipeline)
-{
-    if (pipeline == NULL)
-    {
-        printf("Pipeline is NULL\n");
-        return;
-    }
-
-    printf("Command: {");
-    if (pipeline->cmd != NULL)
-    {
-        for (int i = 0; pipeline->cmd[i] != NULL; ++i)
-        {
-            printf("\"%s\"", pipeline->cmd[i]);
-            if (pipeline->cmd[i + 1] != NULL)
-                printf(", ");
-        }
-    }
-    printf("}\n");
-
-    print_array(pipeline->infiles, "Infiles");
-    print_array(pipeline->outfiles, "Outfiles");
-    print_array(pipeline->outfiles_ext, "Outfiles Ext");
-    print_array(pipeline->here_docs, "Here Docs");
-}
-
-// Fonction pour afficher le contenu de t_all_pipelines
-void print_all_pipelines(const t_all_pipelines *all_pipes)
-{
-    if (all_pipes == NULL)
-    {
-        printf("All Pipelines is NULL\n");
-        return;
-    }
-
-    printf("Pipelines:\n");
-    if (all_pipes->pipelines != NULL)
-    {
-        for (int i = 0; all_pipes->pipelines[i] != NULL; ++i)
-        {
-            printf("Pipeline %d:\n", i);
-            print_pipeline(all_pipes->pipelines[i]);
-            printf("\n");
-        }
-    }
-    else
-    {
-        printf("No pipelines found.\n");
-    }
+	i = 0;
+	q_type = 0;
+	while (input[i])
+	{
+		q_type = quote_check(input[i], q_type);
+		i++;
+	}
+	return q_type;
 }
 
 int main(int argc, char **argv, char **env)
 {
+	char *input_raw;
+	char *input;
 	(void)argc;
 	(void)argv;
-	t_data data;
-
-	init_data(&data, env);
-	// while (1)
-	// {
-		ft_putstr_fd("Minishell> ", 1);
-		char *test = "< Makefile cat | wc -l | wc -c | wc";
-		// char *test = get_next_line(0);
-		// *ft_strchr(test, '\n') = '\0';
-		char *input = two_signs_handler(test);
-		if (input == NULL)
-			error_exit();
-		data.all_pipes = pipelines_creator(input);
-		free(input);
-		// printf("%s\n",data.all_pipes->pipelines[4]->cmd[1]);
-		print_all_pipelines(data.all_pipes);
-		execution(&data);
-		free_all_pipelines(data.all_pipes);
-	// }
-	// execution(&data);
-	free_all(&data);
-	return (0);
+	(void)env;
+	t_data core;
+	t_all_pipelines *all_pipes;
+	int pipelines_succeed;
+   int original_stdin = dup(STDIN_FILENO);
+    int original_stdout = dup(STDOUT_FILENO);
+	signal(SIGQUIT, SIG_IGN);
+	init_data(&core, env);
+	core.signal = 1;
+	rl_catch_signals = 0;
+    while (core.signal != 0)
+	{
+        input_raw = readline("minishell> ");
+        if (input_raw == NULL) {
+            ft_putstr_fd("exiting...\n",1);
+			core.signal = 0;
+            break;
+        }
+		if (is_exit(input_raw) == 0)
+		{
+			free(input_raw);
+			core.signal = 0;
+			break;
+		}
+        if (*input_raw) {
+            add_history(input_raw);
+        }
+		if (input_quote_valid(input_raw) != 0)
+		{
+			ft_putstr_fd("(d)quote error\n",1);
+		}
+		else
+		{
+		if (input_raw[0] != '\0')
+		{
+			input = two_signs_handler(input_raw);
+			input = parse_input_args(input,core.env);
+			//ft_putstr_fd(input,2);
+			// if (input == NULL)
+			// {
+			// 	ft_putstr_fd("input null",2;
+			// 	error_exit();
+			// }
+			all_pipes = ft_calloc(sizeof(t_all_pipelines),1);
+			pipelines_succeed = pipelines_creator(all_pipes, input);
+			free(input);
+			if (pipelines_succeed == 0)
+				ft_putstr_fd("pipeline error\n",1);
+			core.all_pipes = all_pipes;
+			print_pipelines(core.all_pipes);
+			execution(&core);
+			dup2(original_stdin, STDIN_FILENO);
+			dup2(original_stdout, STDOUT_FILENO);
+			free(input_raw);
+			free_all_pipelines(all_pipes);
+		}
+		}
+	}
+	free_env(&(core.env));
+    clear_history();
 }
