@@ -6,32 +6,88 @@
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 02:17:51 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/08/07 02:55:41 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/08/08 16:13:30 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	heredoc_redir()
+char	*get_namedoc(void)
 {
-	
+	int		nb;
+	int		loop;
+	char	*name;
+	char	*num;
+
+	loop = 1;
+	nb = 0;
+	while (loop == 1)
+	{
+		num = ft_itoa(nb);
+		name = ft_strjoin("/tmp/.heredoc_", num);
+		free(num);
+		if (access(name, F_OK) != 0)
+			loop = 0;
+		else
+		{
+			nb++;
+			free(name);
+		}
+	}
+	return (name);
 }
 
-void	heredoc(t_data *data, t_pipeline *node)
+void handle_heredoc(char *delim, int fd)
 {
-	pid_t	pid;
+	char	*line;
 
-	if (!node || node->here_docs[0] == NULL)
-		return (perror("Minishell: Error Heredoc"));
-	if (node->pipefd[0] == -1 || node->pipefd[1] == -1)
-		return (perror("Minishell: Pipe Error"));
-	heredoc_redir();
-	pid = fork();
-	if (pid < 0)
-		return (perror("MiniShell: Error"));
-	else if (pid == 0)
-		child_heredoc();
-	waitpid(pid, NULL, 0);
+	while (1)
+	{
+		line = readline("> "); //verif NULL EOF
+		if (!line || strcmp(line, delim) == 0)
+		{
+			free(line);
+			break;
+		}
+		write(fd, line, strlen(line));
+		write(fd, "\n", 1);
+		free(line);
+	}
+	lseek(fd, 0, SEEK_SET);
 }
+
+void	heredocs(t_pipeline *pipeline)
+{
+	int		i;
+	char	*filename;
+	int		fd;
+
+	i = 0;
+	while (pipeline->here_docs[i])
+	{
+		filename = get_namedoc();
+		fd = open(filename, O_CREAT | O_RDWR | O_TRUNC, 0644);
+		if (fd == -1)
+		{
+			perror("Error open");
+			exit(EXIT_FAILURE);
+		}
+		handle_heredoc(pipeline->here_docs[i], fd);
+		if (pipeline->here_docs[i + 1] != NULL)
+		{
+			close(fd);
+			unlink(filename);
+			free(filename);
+		}
+		else
+		{
+			pipeline->infile_fd = fd;
+			pipeline->here_filename = filename; 
+		}
+		i++;
+	}
+}
+
+/*unlink at the and of exec and free filename to*/
 
 

@@ -6,7 +6,7 @@
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 02:23:28 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/08/07 02:49:07 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/08/08 15:25:51 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,8 +133,8 @@ void	open_file(t_data *data)
 	i = 0;
 	while (data->all_pipes->pipelines[i])
 	{
-		// if (data->all_pipes->pipelines[i]->here_docs[0] != NULL)
-		// 	heredoc(data, data->all_pipes->pipelines[i]);
+		if (data->all_pipes->pipelines[i]->here_docs[0] != NULL)
+			heredocs(data->all_pipes->pipelines[i]);
 		if (data->all_pipes->pipelines[i]->infiles[0] != NULL)
 		{
 			open_infile(data->all_pipes->pipelines[i]);

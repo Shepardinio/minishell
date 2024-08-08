@@ -6,7 +6,7 @@
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 19:08:42 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/08/07 00:58:19 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/08/08 16:10:57 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,5 +133,4 @@ void	execution(t_data *data)
 	if (exit_status != -1)
 		wait_child(data, exit_status, nb_process);
 	free_tab(data->env_array);
-
 }
