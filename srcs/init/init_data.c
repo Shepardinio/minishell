@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bince < bince@student.42.fr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 17:58:40 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/08/06 19:56:35 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/08/04 17:42:17 by bince            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,13 @@ static void	init_env(t_data *data, char **env)
 	while (env[i] != NULL)
 	{
 		tmp = ft_split(env[i], '=');
-		if (tmp && ft_strncmp(tmp[0], "SHLVL", 6) == 0) /*if tmp != NULL*/
+		// printf("%s\n", tmp[0]);
+		if (ft_strncmp(tmp[0], "SHLVL", 6) == 0)
 		{
 			shlvl_up(data, tmp[1]);
 			shlvl = 1;
 		}
-		else if(tmp && ft_strncmp(tmp[0], "PWD", 4) == 0) /*if tmp != NULL*/
+		else if(ft_strncmp(tmp[0], "PWD", 4) == 0)
 			pwd = set_pwd(data);
 		else if (tmp != NULL)
 			ft_lstadd_back(&data->env, ft_lstnew(tmp[0], tmp[1]));

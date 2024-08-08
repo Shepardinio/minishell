@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_pipeline.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bince < bince@student.42.fr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 20:15:46 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/08/08 16:06:45 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/08/08 19:00:58 by bince            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ void	close_all_pipe(t_all_pipelines *all_pipes)
 	while (all_pipes->pipelines[i])
 	{
 		close_pipe(all_pipes->pipelines[i]->pipefd);
-		// close_pipe(all_pipes->pipelines[i]->pipehd);
 		if (all_pipes->pipelines[i]->infile_fd != -1 && all_pipes->pipelines[i]->infile_fd != 0)
 			reset_fd(&all_pipes->pipelines[i]->infile_fd);
 		if (all_pipes->pipelines[i]->outfile_fd != -1 && all_pipes->pipelines[i]->outfile_fd != 1)
@@ -43,22 +42,6 @@ void	close_all_pipe(t_all_pipelines *all_pipes)
 	}
 }
 
-// void	creat_pipe_heredoc(t_pipeline *node, int i)
-// {
-// 	if (node->here_docs[0] != NULL)
-// 	{
-// 		if (pipe(node->pipehd) == -1)
-// 			perror("Minishell: Pipe Error");
-// 		printf("pipe here doc creer index %d\n", i);
-// 		printf("pipehd0=%d, pipehd1=%d\n", node->pipehd[0], node->pipehd[1]);
-// 	}
-// 	else
-// 	{
-// 		node->pipehd[0] = -1;
-// 		node->pipehd[1] = -1;
-// 	}
-// }
-
 void	creat_pipe(t_pipeline **node)
 {
 	int	i;
@@ -66,10 +49,13 @@ void	creat_pipe(t_pipeline **node)
 	i = 0;
 	while (node[i])
 	{
-		if (node[i]->outfiles[0] == NULL && node[i]->outfiles_ext[0] == NULL && node[i + 1]/*|| node[i]->here_docs[0] != NULL*/)
+		if (node[i]->outfiles[0] == NULL && node[i + 1])
 		{
 			if (pipe(node[i]->pipefd) == -1)
-				perror("Minishell: Pipe Error");
+			{
+				ft_putstr_fd(node[i]->cmd[0], 2);
+				ft_putstr_fd(": Error with pipe creation\n", 2); /*maybe modif*/
+			}
 			printf("pipe creer index %d\n", i);
 			printf("pipe0=%d, pipe1=%d\n", node[i]->pipefd[0], node[i]->pipefd[1]);
 		}
@@ -78,7 +64,6 @@ void	creat_pipe(t_pipeline **node)
 			node[i]->pipefd[0] = -1;
 			node[i]->pipefd[1] = -1;
 		}
-		// creat_pipe_heredoc(node[i], i);
 		i++;
 	}
 }

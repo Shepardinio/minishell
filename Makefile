@@ -11,15 +11,15 @@ SRCS = ./srcs/main.c  ./srcs/char_checks.c ./srcs/pipeline_parser.c ./srcs/quote
 		srcs/utils/free_fonction.c\
 		srcs/executions/builtin_exec.c\
 		srcs/executions/file_handler.c\
-		srcs/executions/heredoc.c\
 		srcs/executions/init_exec.c\
 		srcs/executions/utils_exec.c\
-		srcs/executions/utils_pipeline.c
+		srcs/executions/utils_pipeline.c\
+		srcs/executions/here_doc.c
 OBJS_DIR = ./objs
 OBJS = $(SRCS:./srcs/%.c=$(OBJS_DIR)/%.o)
 LIBFT = ./Libft/libft.a
 CC = gcc
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra -g3
 RM = rm -rf
 
 GREEN = \033[0;92m

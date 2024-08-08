@@ -6,7 +6,7 @@
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 20:50:08 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/08/06 19:51:54 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/08/08 21:48:38 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ int	is_builtin(char *cmd)
 			|| !ft_strncmp(cmd, "env", 4)
 			|| !ft_strncmp(cmd, "export", 7)
 			|| !ft_strncmp(cmd, "pwd", 4)
-			|| !ft_strncmp(cmd, "unset", 6))
+			|| !ft_strncmp(cmd, "unset", 6)
+			|| !ft_strncmp(cmd, "exit", 5))
 		return (1);
 	return (0);
 }
@@ -42,5 +43,7 @@ int	exec_builtins(t_data *data, t_pipeline *node)
 		ft_pwd();
 	else if (ft_strncmp(node->cmd[0], "unset", 6) == 0)
 		ft_unset(data, node->cmd);
+	else if (ft_strncmp(node->cmd[0], "exit", 5) == 0)
+		return (1);
 	return (1);
 }

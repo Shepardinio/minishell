@@ -6,7 +6,7 @@
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 19:08:42 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/08/08 16:10:57 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/08/08 22:18:31 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	wait_child(t_data *data, pid_t exit_status, int nb_process)
 void    free_exit(t_data *data, int err)
 {
     free_tab(data->path);
-   	//free_env(data->env);
+   	free_env(&(data->env));
     free_tab(data->env_array);
     free_all_pipelines(data->all_pipes);
     exit(err);
@@ -63,7 +63,6 @@ void	exec_cmd(t_data *data, char **arg)
 
 void	child(t_data *data)
 {
-	printf("AVANT DUP2: cmd = %s\n stdin = %d\n stfout = %d\n", data->all_pipes->pipelines[data->index]->cmd[0],data->all_pipes->pipelines[data->index]->infile_fd, data->all_pipes->pipelines[data->index]->outfile_fd);
 	if (dup2(data->all_pipes->pipelines[data->index]->infile_fd, READ) == -1)
 		return (perror("Minishell: Error"));
 	if (dup2(data->all_pipes->pipelines[data->index]->outfile_fd, WRITE) == -1)
@@ -71,7 +70,9 @@ void	child(t_data *data)
 	close_all_pipe(data->all_pipes);
 	if (exec_builtins(data, data->all_pipes->pipelines[data->index]) == 1)
 	{
+		// I CHANGED HERE
 		free_exit(data,127);
+		// ------------------
 		return ;
 	}
 	exec_cmd(data, data->all_pipes->pipelines[data->index]->cmd);
@@ -118,6 +119,19 @@ int	launch_cmd(t_data *data, int nb_process)
 	return (exit_status);
 }
 
+void	close_here_doc(t_all_pipelines *all_pipes)
+{
+	int	i;
+
+	i = 0;
+	while (all_pipes->pipelines[i])
+	{
+		if (all_pipes->pipelines[i]->here_filename != NULL)
+			unlink(all_pipes->pipelines[i]->here_filename);
+		i++;
+	}
+}
+
 void	execution(t_data *data)
 {
 	int	nb_process;
@@ -132,5 +146,6 @@ void	execution(t_data *data)
 	close_all_pipe(data->all_pipes);
 	if (exit_status != -1)
 		wait_child(data, exit_status, nb_process);
+	close_here_doc(data->all_pipes);
 	free_tab(data->env_array);
 }

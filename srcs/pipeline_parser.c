@@ -8,7 +8,9 @@ t_pipeline *parser(char *input)
 
 	pipeline = pipeline_init();
 	if (!pipeline)
+	{
 		return NULL;
+	}
 	nns = nns_init(input);
 	if (!nns)
 	{
@@ -33,13 +35,8 @@ t_pipeline *parser(char *input)
 		free_pipeline(pipeline);
 		return NULL;
 	}
-	pipeline->outfiles_ext = tokenization(&nns, -2);
-	if (!pipeline->outfiles_ext)
-	{
-		free_pipeline(pipeline);
-		return NULL;
-	}
 	pipeline->cmd = cmd_quote_parse(nns->newstr);
+	//pipeline->cmd = ft_split(nns->newstr,' ');
 	free(nns->newstr);
 	free(nns);
 	return pipeline;
@@ -48,7 +45,11 @@ t_pipeline *parser(char *input)
 
 int pipelines_creator(t_all_pipelines *all_pipes, char *input)
 {
-	char **pipelines_str = ft_split(input, '|');
+	char **pipelines_str;
+
+	input = parse_pipes_in_quotes(input);
+	pipelines_str = ft_split(input, '|');
+	pipelines_str = deparse_pipes(pipelines_str);
 	if (!pipelines_str)
 		return 0;
 	int pipe_counter = count_tokens(input, '|');

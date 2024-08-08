@@ -53,7 +53,7 @@ int is_set(char c);
 int is_token(char c);
 char *parse(char *input);
 char *delete_part(char *input, int i, int j,int l);
-char *cut_str(char *input, int i, int j);
+char *cut_str(char *input, int i, int j, int extended);
 char  **tokenization(t_nns **nns, char token);
 int count_tokens(char *input, char token);
 t_nns *gen_token(t_nns *nns_old, char token);
@@ -77,6 +77,9 @@ void read_input();
 int is_exit(char *str);
 char **cmd_quote_parse(char *str);
 char *parse_input_args(char *input,t_list *env);
-
+char *parse_space_in_quotes(char *str);
+char **deparse_spaces(char **parsed);
+char **deparse_pipes(char **parsed);
+char *parse_pipes_in_quotes(char *str);
 #endif
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_exec.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bince < bince@student.42.fr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 20:23:24 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/08/06 20:50:28 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/08/08 18:22:21 by bince            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	count_cmd(t_data *data)
 	// printf("nb cmd %d\n", i);
 	return (i);
 }
-
+//if malloc error quit
 void	creat_env_char(t_data *data)
 {
 	int		i;
@@ -70,8 +70,6 @@ char	*get_cmd_path_2(char **arg)
 	{
 		pwd = getcwd(NULL, 0);
 		tmp = ft_strjoin("/", arg[0]);
-		if (tmp == NULL)
-			return (free(pwd), NULL);
 		tmp_path = ft_strjoin(pwd, tmp);
 		free(pwd);
 		free(tmp);
@@ -97,12 +95,10 @@ char	*get_cmd_path(t_data *data, char **arg)
 	if (access(cmd, F_OK | X_OK) == 0)
 		return (cmd);
 	cmd = ft_strjoin("/", cmd);
-	if (cmd == NULL)
-		return (NULL);
 	while (data->path && data->path[i] != NULL)
 	{
 		tmp_path = ft_strjoin(data->path[i], cmd);
-		if (tmp_path && access(tmp_path, F_OK | X_OK) == 0)
+		if (access(tmp_path, F_OK | X_OK) == 0)
 			return (free(cmd), tmp_path);
 		free(tmp_path);
 		i++;
@@ -110,4 +106,3 @@ char	*get_cmd_path(t_data *data, char **arg)
 	free(cmd);
 	return (NULL);
 }
-

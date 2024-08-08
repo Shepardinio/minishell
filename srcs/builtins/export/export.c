@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bince < bince@student.42.fr>               +#+  +:+       +#+        */
+/*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 17:45:22 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/08/04 17:41:53 by bince            ###   ########.fr       */
+/*   Updated: 2024/08/08 21:57:47 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,5 +77,5 @@ void	ft_export(t_data *data, char **arg)
 		}
 	}
 	else
-		ft_putstr_fd("I eat my poop\n", 1);
+		ft_putstr_fd("\n", 1);
 }

@@ -24,9 +24,8 @@ t_pipeline *pipeline_init()
 	pipeline->cmd = NULL;
 	pipeline->infiles = NULL;
 	pipeline->outfiles = NULL;
-	pipeline->outfiles_ext = NULL;
 	pipeline->here_docs = NULL;
-	pipeline->here_filename =NULL;
+	pipeline->here_filename = NULL;
 	pipeline->infile_fd = 0;
 	pipeline->outfile_fd = 1;
 	return pipeline;
@@ -46,11 +45,11 @@ char *two_signs_handler(char *input)
 	while (new_input[i+1])
 	{
 		q_type = quote_check(new_input[i],q_type);
-		if (new_input[i] == '<' && new_input[i+1] == '<' && q_type != 1)
+		if (new_input[i] == '<' && new_input[i+1] == '<' && q_type == 0)
 		{
 			new_input[i] = -1;
 			new_input[i+1] = ' ';
-		}else if (new_input[i] == '>' && new_input[i+1] == '>' && q_type != 1)
+		}else if (new_input[i] == '>' && new_input[i+1] == '>' && q_type == 0)
 		{
 			new_input[i] = -2;
 			new_input[i+1] = ' ';
@@ -66,6 +65,8 @@ void error_exit()
 {
 	exit(-1);
 }
+
+
 
 void print_pipelines(t_all_pipelines *all_pipelines)
 {
@@ -135,8 +136,6 @@ int main(int argc, char **argv, char **env)
 	t_data core;
 	t_all_pipelines *all_pipes;
 	int pipelines_succeed;
-   int original_stdin = dup(STDIN_FILENO);
-    int original_stdout = dup(STDOUT_FILENO);
 	signal(SIGQUIT, SIG_IGN);
 	init_data(&core, env);
 	core.signal = 1;
@@ -180,15 +179,15 @@ int main(int argc, char **argv, char **env)
 			if (pipelines_succeed == 0)
 				ft_putstr_fd("pipeline error\n",1);
 			core.all_pipes = all_pipes;
-			print_pipelines(core.all_pipes);
 			execution(&core);
-			dup2(original_stdin, STDIN_FILENO);
-			dup2(original_stdout, STDOUT_FILENO);
+			print_pipelines(core.all_pipes);
 			free(input_raw);
 			free_all_pipelines(all_pipes);
 		}
 		}
 	}
 	free_env(&(core.env));
+	free_tab(core.path);
+	//free_all_pipelines(all_pipes);
     clear_history();
 }

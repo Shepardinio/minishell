@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   struct.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bince < bince@student.42.fr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 17:29:40 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/08/08 15:55:42 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/08/08 18:58:22 by bince            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ typedef struct s_pipeline
 	char	**cmd;
 	char	**infiles;
 	char	**outfiles;
-	char	**outfiles_ext;
 	char	**here_docs;
 	char	*here_filename;
 	int		infile_fd;
