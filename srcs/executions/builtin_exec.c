@@ -6,7 +6,7 @@
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 20:50:08 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/08/08 21:48:38 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/08/12 20:21:57 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,6 @@ int	exec_builtins(t_data *data, t_pipeline *node)
 	else if (ft_strncmp(node->cmd[0], "unset", 6) == 0)
 		ft_unset(data, node->cmd);
 	else if (ft_strncmp(node->cmd[0], "exit", 5) == 0)
-		return (1);
+		ft_exit(data, node->cmd);
 	return (1);
 }

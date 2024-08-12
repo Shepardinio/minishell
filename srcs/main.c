@@ -148,12 +148,12 @@ int main(int argc, char **argv, char **env)
 			core.signal = 0;
             break;
         }
-		if (is_exit(input_raw) == 0)
-		{
-			free(input_raw);
-			core.signal = 0;
-			break;
-		}
+		// if (is_exit(input_raw) == 0)
+		// {
+		// 	free(input_raw);
+		// 	core.signal = 0;
+		// 	break;
+		// }
         if (*input_raw) {
             add_history(input_raw);
         }
@@ -180,7 +180,7 @@ int main(int argc, char **argv, char **env)
 				ft_putstr_fd("pipeline error\n",1);
 			core.all_pipes = all_pipes;
 			execution(&core);
-			print_pipelines(core.all_pipes);
+			// print_pipelines(core.all_pipes);
 			// int i = 0;
 			// printf("PATH\n");
 			// if (core.path == NULL)

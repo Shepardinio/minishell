@@ -6,7 +6,7 @@
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 19:08:42 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/08/08 22:18:31 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/08/12 18:46:39 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,6 @@ void	wait_child(t_data *data, pid_t exit_status, int nb_process)
 		}
 		i++;
 	}
-}
-
-void    free_exit(t_data *data, int err)
-{
-    free_tab(data->path);
-   	free_env(&(data->env));
-    free_tab(data->env_array);
-    free_all_pipelines(data->all_pipes);
-    exit(err);
 }
 
 void	exec_cmd(t_data *data, char **arg)

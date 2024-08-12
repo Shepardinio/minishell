@@ -3,6 +3,8 @@ SRCS = ./srcs/main.c  ./srcs/char_checks.c ./srcs/pipeline_parser.c ./srcs/quote
 	   srcs/builtins/cd/cd.c\
 		srcs/builtins/echo/echo.c\
 		srcs/builtins/env/env.c\
+		srcs/builtins/exit/exit.c\
+		srcs/builtins/exit/exit_utils.c\
 		srcs/builtins/export/export.c\
 		srcs/builtins/export/export_utils.c\
 		srcs/builtins/pwd/pwd.c\
