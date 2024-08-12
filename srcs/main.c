@@ -181,6 +181,16 @@ int main(int argc, char **argv, char **env)
 			core.all_pipes = all_pipes;
 			execution(&core);
 			print_pipelines(core.all_pipes);
+			// int i = 0;
+			// printf("PATH\n");
+			// if (core.path == NULL)
+			// 	printf("PATH == NULL\n");
+			// else
+			// {
+			// 	while (core.path[i])
+			// 		printf("%s\n", core.path[i++]);
+			// }
+			printf("status = %d\n", core.status);
 			free(input_raw);
 			free_all_pipelines(all_pipes);
 		}
