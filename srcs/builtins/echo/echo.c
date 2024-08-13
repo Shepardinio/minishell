@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bince < bince@student.42.fr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 23:07:53 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/08/13 04:52:24 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/08/13 12:35:49 by bince            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
-//i changed here
+
 void	ft_echo(t_data *data, char **arg)
 {
 	int	i;
-	int n;
+	int	n;
 
 	i = 1;
 	n = 0;

@@ -6,39 +6,11 @@
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 19:08:42 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/08/13 09:28:11 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/08/13 17:15:46 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-void	wait_child(t_data *data, pid_t exit_status, int nb_process)
-{
-	int		status;
-	pid_t	child_pid;
-	int		i;
-	int term_sig;
-
-	i = 0;
-	while (i < nb_process)
-	{
-		child_pid = waitpid(data->all_pipes->pipelines[i]->pid, &status, 0);
-		if (child_pid == exit_status)
-		{
-			if (WIFEXITED(status))
-				data->status = WEXITSTATUS(status);
-			else if (WIFSIGNALED(status))
-			{
-				term_sig = WTERMSIG(status);
-
-				if (term_sig == SIGINT)
-					data->status = 128 + SIGINT;
-				else
-					data->status = 128 + term_sig;
-			}
-		}
-		i++;
-	}
-}
 
 void	exec_cmd(t_data *data, char **arg)
 {
@@ -60,37 +32,13 @@ void	exec_cmd(t_data *data, char **arg)
 	ft_putstr_fd(": command not found\n", 2);
 	free_exit(data, 127);
 }
-//i changed here
-void	child(t_data *data)
-{
-	if (data->all_pipes->pipelines[data->index]->infile_fd == -1)
-		free_exit(data, EXIT_FAILURE);
-	else
-	{
-		if (dup2(data->all_pipes->pipelines[data->index]->infile_fd, READ) == -1)
-			return (perror("Minishell: Error"));
-	}
-	if (data->all_pipes->pipelines[data->index]->outfile_fd == -1)
-		free_exit(data, EXIT_FAILURE);
-	else
-	{
-		if (dup2(data->all_pipes->pipelines[data->index]->outfile_fd, WRITE) == -1)
-			return (perror("Minishell: Error"));
-	}
-	close_all_pipe(data->all_pipes);
-	if (exec_builtins(data, data->all_pipes->pipelines[data->index]) == 1)
-	{
-		free_exit(data,127);
-		return ;
-	}
-	exec_cmd(data, data->all_pipes->pipelines[data->index]->cmd);
-}
 
 pid_t	start_exec(t_data *data)
 {
 	pid_t	pid;
 
-	if (count_cmd(data) == 1 && is_builtin(data->all_pipes->pipelines[0]->cmd[0]) == 1)
+	if (count_cmd(data) == 1
+		&& is_builtin(data->all_pipes->pipelines[0]->cmd[0]) == 1)
 	{
 		exec_builtins(data, data->all_pipes->pipelines[0]);
 		return (-1);
@@ -148,7 +96,18 @@ void	execution(t_data *data)
 	nb_process = count_cmd(data);
 	creat_env_char(data);
 	creat_pipe(data->all_pipes->pipelines);
-	open_file(data);
+	if (open_file(data) == -1)
+	{
+		close_all_pipe(data->all_pipes);
+		close_here_doc(data->all_pipes);
+		data->status = 1;
+		return (free_tab(data->env_array));
+	}
+	if (g_signals.here_doc_quit == 1)
+	{
+		free_tab(data->env_array);
+		return ;
+	}
 	std_handler(data->all_pipes->pipelines, nb_process);
 	exit_status = launch_cmd(data, nb_process);
 	close_all_pipe(data->all_pipes);

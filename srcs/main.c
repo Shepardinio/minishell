@@ -1,37 +1,68 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bince < bince@student.42.fr>               +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/08/13 12:52:21 by bince             #+#    #+#             */
+/*   Updated: 2024/08/13 12:52:24 by bince            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 #include <stdio.h>
 
-t_signals g_signals = {0};
+t_signals	g_signals = {0};
 
-void print_pipelines(t_all_pipelines *all_pipelines);
-
-void execute_input(char *input, t_data *core)
+int	pipe_check(t_all_pipelines *all_pipes)
 {
-	int pipelines_succeed;
+	int	i;
+
+	i = 0;
+	while (all_pipes->pipelines[i])
+	{
+		if (all_pipes->pipelines[i]->cmd)
+		{
+			if (all_pipes->pipelines[i]->cmd[0] == NULL)
+				return (-1);
+		}
+		i++;
+	}
+	return (1);
+}
+
+void	execute_input(char *input, t_data *core)
+{
+	int	pipelines_succeed;
+
 	core->all_pipes = ft_calloc(sizeof(t_all_pipelines), 1);
 	if (core->all_pipes)
 	{
 		pipelines_succeed = pipelines_creator(core->all_pipes, input);
 		free(input);
 		if (pipelines_succeed == 0)
-		{
-			ft_putstr_fd("pipeline malloc error\n", 1);
-			free_all_pipelines(core->all_pipes);
-		}
+			error_pipeline_malloc(core);
 		else
 		{
-			// print_pipelines(core->all_pipes);
-            execution(core);
-            free_all_pipelines(core->all_pipes);
+			if (pipe_check(core->all_pipes) != -1)
+			{
+				execution(core);
+				if (g_signals.here_doc_quit == 1)
+					g_signals.here_doc_quit = 0;
+			}
+			else
+				error_empty_pipe(core);
+			free_all_pipelines(core->all_pipes);
 		}
 	}
 	else
 		ft_putstr_fd("pipeline malloc error\n", 1);
 }
 
-void exit_handler(t_data *core)
+void	exit_handler(t_data *core)
 {
-	int exit_status;
+	int	exit_status;
 
 	exit_status = core->status;
 	free_env(&core->env);
@@ -39,44 +70,22 @@ void exit_handler(t_data *core)
 	clear_history();
 	exit(exit_status);
 }
-int	sig_event(void)
-{
-    return (EXIT_SUCCESS);
-}
 
-void	handle_sigint(int sig)
+int	ms_loop(t_data *core)
 {
-    (void)sig;
-   	write(STDIN_FILENO, "\n", 1);
-	rl_replace_line("", 0);
-	rl_on_new_line();
-	rl_done = 1;
-	g_signals.cmd_quit = 1;
-}
+	char	*input_raw;
+	int		input_raw_check;
+	char	*input;
 
-void signal_init(t_data *core)
-{
-	core->signal = 1;
-	g_signals.cmd_quit = 0;
-	rl_event_hook = sig_event;
-	signal(SIGINT, handle_sigint);
-	signal(SIGQUIT, SIG_IGN);
-	signal(SIGTSTP, SIG_IGN);
-}
-
-
-int ms_loop(t_data *core)
-{
-	char *input_raw;
-	int input_raw_check;
-	char *input;
 	g_signals.cmd_quit = 0;
 	input_raw = readline("minishell> ");
 	input_raw_check = input_raw_checks(input_raw, core);
 	if (input_raw_check != 1)
-		return -1;
+		return (-1);
 	if (input_quote_valid(input_raw) != 0)
 		ft_putstr_fd("(d)quote error\n", 1);
+	else if (input_raw[0] == '|')
+		error_empty_pipe(core);
 	else
 	{
 		if (input_raw[0] != '\0')
@@ -85,69 +94,29 @@ int ms_loop(t_data *core)
 			if (input)
 				execute_input(input, core);
 			else
-				ft_putstr_fd("malloc error.\n",2);
+				ft_putstr_fd("malloc error.\n", 2);
 		}
 	}
-	free(input_raw);
-	return 1;
+	return (free(input_raw), 1);
 }
 
 int	main(int argc, char **argv, char **env)
 {
-	t_data			core;
+	t_data	core;
+	int		data_init;
 
 	(void)argc;
 	(void)argv;
 	(void)env;
-	init_data(&core, env);
-	signal_init(&core);
-	while (core.signal != 0)
+	data_init = init_data(&core, env);
+	if (data_init == 0)
 	{
-		if (ms_loop(&core) == -1)
-			break;
+		signal_init(&core);
+		while (core.signal != 0)
+		{
+			if (ms_loop(&core) == -1)
+				break ;
+		}
 	}
 	exit_handler(&core);
-}
-
-void print_pipelines(t_all_pipelines *all_pipelines)
-{
-	int i = 0;
-	int j = 0;
-	while (all_pipelines->pipelines[i])
-	{
-		j = 0;
-		printf("---- pipeline - %d ------  \n", i);
-		printf("cmds \n");
-		while (all_pipelines->pipelines[i]->cmd[j])
-		{
-			printf("%s\n", all_pipelines->pipelines[i]->cmd[j]);
-			j++;
-		}
-		printf("\n");
-		j = 0;
-		printf("here_docs \n");
-		while (all_pipelines->pipelines[i]->here_docs[j])
-		{
-			printf("%s\n", all_pipelines->pipelines[i]->here_docs[j]);
-			j++;
-		}
-		j = 0;
-		printf("\n");
-		printf("infiles \n");
-		while (all_pipelines->pipelines[i]->infiles[j])
-		{
-			printf("%s\n", all_pipelines->pipelines[i]->infiles[j]);
-			j++;
-		}
-		j = 0;
-		printf("\n");
-		printf("outfiles \n");
-		while (all_pipelines->pipelines[i]->outfiles[j])
-		{
-			printf("%s\n", all_pipelines->pipelines[i]->outfiles[j]);
-			j++;
-		}
-		i++;
-		printf("--------------------\n");
-	}
 }

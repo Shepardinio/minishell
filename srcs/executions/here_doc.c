@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   here_doc.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/08/13 13:14:04 by bince             #+#    #+#             */
+/*   Updated: 2024/08/13 17:25:19 by mel-yand         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 char	*get_namedoc(void)
@@ -12,7 +24,11 @@ char	*get_namedoc(void)
 	while (loop == 1)
 	{
 		num = ft_itoa(nb);
+		if (num == NULL)
+			return (NULL);
 		name = ft_strjoin("/tmp/.heredoc_", num);
+		if (name == NULL)
+			return (free(num), NULL);
 		free(num);
 		if (access(name, F_OK) != 0)
 			loop = 0;
@@ -28,18 +44,27 @@ char	*get_namedoc(void)
 void	sig_heredoc(int status)
 {
 	(void)status;
-	rl_replace_line("\n", 0);
+	rl_replace_line("", 0);
 	rl_redisplay();
 	rl_done = 1;
 	g_signals.here_doc_quit = 1;
 }
 
-void handle_heredoc(char *delim, int fd)
+int	here_doc_condition(char *line, char *delim)
+{
+	if (!ft_strncmp(line, delim, ft_strlen(line)) && ft_strlen(line) > 0)
+		return (1);
+	else
+		return (0);
+}
+
+void	handle_heredoc(char *delim, int fd)
 {
 	char	*line;
 
 	signal(SIGINT, sig_heredoc);
 	g_signals.here_doc_quit = 0;
+	rl_catch_signals = 0;
 	while (1)
 	{
 		line = readline("> ");
@@ -49,7 +74,7 @@ void handle_heredoc(char *delim, int fd)
 				2);
 			break ;
 		}
-		if ((!ft_strncmp(line, delim,ft_strlen(line)) && ft_strlen(line) > 0) || g_signals.here_doc_quit == 1)
+		if ((here_doc_condition(line, delim)) || g_signals.here_doc_quit == 1)
 		{
 			free(line);
 			break ;
@@ -58,9 +83,11 @@ void handle_heredoc(char *delim, int fd)
 		write(fd, "\n", 1);
 		free(line);
 	}
+	signal(SIGINT, handle_sigint);
 	lseek(fd, 0, SEEK_SET);
 }
-void	heredocs(t_pipeline *pipeline)
+
+int	heredocs(t_pipeline *pipeline)
 {
 	int		i;
 	char	*filename;
@@ -70,34 +97,20 @@ void	heredocs(t_pipeline *pipeline)
 	while (pipeline->here_docs[i])
 	{
 		filename = get_namedoc();
+		if (filename == NULL)
+			return (-1);
 		fd = open(filename, O_CREAT | O_RDWR | O_TRUNC, 0644);
 		if (fd == -1)
-		{
-			perror("Error open");
-			free(filename);
-			return;
-		}
+			return (open_err_hd(filename));
 		handle_heredoc(pipeline->here_docs[i], fd);
 		if (g_signals.here_doc_quit)
-        {
-            close(fd);
-            unlink(filename);
-            free(filename);
-            return;
-        }
-		if (pipeline->here_docs[i + 1] != NULL)
 		{
 			close(fd);
 			unlink(filename);
 			free(filename);
+			return (-1);
 		}
-		else
-		{
-			pipeline->infile_fd = fd;
-			pipeline->here_filename = filename;
-		}
-		i++;
+		heredocs_2(pipeline, &i, fd, filename);
 	}
+	return (0);
 }
-
-/*unlink at the and of exec and free filename to*/

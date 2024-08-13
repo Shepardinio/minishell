@@ -3,25 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bince < bince@student.42.fr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 18:34:46 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/08/13 04:16:11 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/08/13 13:12:36 by bince            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
-
-// void	exit_handler(t_data *core)
-// {
-// 	int	exit_status;
-
-// 	exit_status = core->status;
-// 	free_env(&core->env);
-// 	free_tab(core->path);
-// 	clear_history();
-// 	exit(exit_status);
-// }
 
 void	free_exit(t_data *data, int err)
 {
@@ -35,7 +24,8 @@ void	free_exit(t_data *data, int err)
 
 void	check_arg(t_data *data, char **arg)
 {
-	if (only_digit(arg[1]) == EXIT_FAILURE || is_too_big(arg[1]) == EXIT_FAILURE)
+	if (only_digit(arg[1]) == EXIT_FAILURE
+		|| is_too_big(arg[1]) == EXIT_FAILURE)
 	{
 		ft_putstr_fd("Minishell: exit:", 2);
 		ft_putstr_fd(arg[1], 2);
@@ -68,7 +58,7 @@ void	ft_exit(t_data *data, char **arg)
 			else
 				data->status = err % 256;
 			ft_putstr_fd("exit\n", 2);
-			free_exit(data,data->status);
+			free_exit(data, data->status);
 		}
 	}
 }

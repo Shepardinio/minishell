@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   init_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bince < bince@student.42.fr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 17:58:40 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/08/13 06:49:41 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/08/13 12:44:21 by bince            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-//i changed here
+
 static int	shlvl_up(t_data *data, char *lvl)
 {
 	char	*lvlup;
@@ -31,7 +31,7 @@ static int	set_pwd(t_data *data)
 	free(cwd);
 	return (1);
 }
-//i changed here
+
 static void	check_pwd_shlvl(t_data *data, int pwd, int shlvl)
 {
 	t_list	*old;
@@ -44,7 +44,7 @@ static void	check_pwd_shlvl(t_data *data, int pwd, int shlvl)
 	if (shlvl == 0)
 		ft_lstadd_back(&data->env, ft_lstnew("SHLVL", "1"));
 }
-//i changed here
+
 int	init_env(t_data *data, char **env)
 {
 	int		i;
@@ -62,7 +62,7 @@ int	init_env(t_data *data, char **env)
 			return (EXIT_FAILURE);
 		if (ft_strncmp(tmp[0], "SHLVL", 6) == 0)
 			shlvl = shlvl_up(data, tmp[1]);
-		else if(ft_strncmp(tmp[0], "PWD", 4) == 0)
+		else if (ft_strncmp(tmp[0], "PWD", 4) == 0)
 			pwd = set_pwd(data);
 		else if (tmp != NULL)
 			ft_lstadd_back(&data->env, ft_lstnew(tmp[0], tmp[1]));
@@ -72,14 +72,13 @@ int	init_env(t_data *data, char **env)
 	check_pwd_shlvl(data, pwd, shlvl);
 	return (EXIT_SUCCESS);
 }
-//i changed here
+
 int	init_data(t_data *data, char **env)
 {
 	data->status = 0;
 	data->env = NULL;
 	data->env_array = NULL;
 	data->path = ft_split(getenv("PATH"), ':');
-
 	if (env && *env)
 	{
 		if (init_env(data, env) == EXIT_FAILURE)

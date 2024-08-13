@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bince < bince@student.42.fr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 17:45:22 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/08/13 09:08:58 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/08/13 12:36:16 by bince            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	modif_var(t_data *data, char **arg, int empty)
 {
-	t_list *env;
+	t_list	*env;
 
 	env = find(data, arg[0]);
 	free(env->value);
@@ -28,7 +28,7 @@ void	modif_var(t_data *data, char **arg, int empty)
 
 int	is_new_var(t_data *data, char *varname)
 {
-	t_list *env;
+	t_list	*env;
 
 	env = find(data, varname);
 	if (env == NULL)
@@ -74,7 +74,7 @@ void	export_var(t_data *data, char *arg)
 		set_datapath(data, tmp);
 	free_tab(tmp);
 }
-//i changed here
+
 void	ft_export(t_data *data, char **arg)
 {
 	int	i;

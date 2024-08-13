@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bince < bince@student.42.fr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 22:50:47 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/08/13 10:16:59 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/08/13 11:44:52 by bince            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	check_varname(t_data *data, char *varname, int *first)
 	}
 	return (0);
 }
-//i changed here
+
 void	del_var(t_data *data, char *varnam, int *first)
 {
 	int		valid;
@@ -43,9 +43,7 @@ void	del_var(t_data *data, char *varnam, int *first)
 		if (ft_strncmp(var_env->var, "PATH", 5) == 0)
 		{
 			free_tab(data->path);
-			//i added this part
 			data->path = NULL;
-			//-------------
 		}
 		if (var_env == data->env)
 			data->env = var_env->next;
