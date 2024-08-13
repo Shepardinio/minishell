@@ -1,10 +1,8 @@
 NAME = minishell
-SRCS = ./srcs/main.c  ./srcs/char_checks.c ./srcs/pipeline_parser.c ./srcs/quote_handler.c ./srcs/str_manipulations.c ./srcs/tokenization.c ./srcs/error_check.c ./srcs/expand_vars.c  ./srcs/ft_cmd_split.c ./srcs/free_all_pipelines.c  \
+SRCS = ./srcs/main.c  ./srcs/char_checks.c ./srcs/pipeline_parser.c ./srcs/quote_handler.c ./srcs/str_manipulations.c ./srcs/tokenization.c ./srcs/error_check.c ./srcs/expand_vars.c  ./srcs/ft_cmd_split.c ./srcs/free_all_pipelines.c ./srcs/inits.c ./srcs/input_operations.c \
 	   srcs/builtins/cd/cd.c\
 		srcs/builtins/echo/echo.c\
 		srcs/builtins/env/env.c\
-		srcs/builtins/exit/exit.c\
-		srcs/builtins/exit/exit_utils.c\
 		srcs/builtins/export/export.c\
 		srcs/builtins/export/export_utils.c\
 		srcs/builtins/pwd/pwd.c\
@@ -16,7 +14,10 @@ SRCS = ./srcs/main.c  ./srcs/char_checks.c ./srcs/pipeline_parser.c ./srcs/quote
 		srcs/executions/init_exec.c\
 		srcs/executions/utils_exec.c\
 		srcs/executions/utils_pipeline.c\
-		srcs/executions/here_doc.c
+		srcs/executions/here_doc.c\
+		srcs/builtins/exit/exit.c\
+		srcs/builtins/exit/exit_utils.c
+
 OBJS_DIR = ./objs
 OBJS = $(SRCS:./srcs/%.c=$(OBJS_DIR)/%.o)
 LIBFT = ./Libft/libft.a

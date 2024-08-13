@@ -6,7 +6,7 @@
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/13 13:08:29 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/08/12 22:34:57 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/08/13 06:43:41 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 #include <readline/history.h>
 #include <signal.h>
 
-void	init_data(t_data *data, char **env);
+int	init_data(t_data *data, char **env);
 
 //--------------------------------------------------//
 //						UTILS						//
@@ -45,6 +45,7 @@ int		count_str(char **str);
 int		count_list(t_list *lst);
 t_list	*find(t_data *data, char *varname);
 void	free_env(t_list **env);
+void	free_exit(t_data *data, int err);
 
 //--------------------------------------------------//
 //						BERKE <3					//
@@ -77,10 +78,19 @@ int error_0(char **str_tab);
 void read_input();
 int is_exit(char *str);
 char **cmd_quote_parse(char *str);
-char *parse_input_args(char *input,t_list *env);
+
+char *parse_input_args(char *input,t_data env);
 char *parse_space_in_quotes(char *str);
 char **deparse_spaces(char **parsed);
 char **deparse_pipes(char **parsed);
 char *parse_pipes_in_quotes(char *str);
+t_pipeline	*pipeline_init(void);
+t_nns	*nns_init(char *input);
+int	input_quote_valid(char *input);
+char	*input_prep(char *input_raw, t_data core);
+int input_raw_checks(char *input_raw, t_data *core);
+char	*two_signs_handler(char *input);
+char *two_signs_handler_2(int i, char *new_input, int q_type);
+
 #endif
 

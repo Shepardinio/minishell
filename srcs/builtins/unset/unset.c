@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bince < bince@student.42.fr>               +#+  +:+       +#+        */
+/*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 22:50:47 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/08/08 18:13:28 by bince            ###   ########.fr       */
+/*   Updated: 2024/08/13 10:16:59 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	check_varname(t_data *data, char *varname, int *first)
 	}
 	return (0);
 }
-
+//i changed here
 void	del_var(t_data *data, char *varnam, int *first)
 {
 	int		valid;
@@ -50,8 +50,8 @@ void	del_var(t_data *data, char *varnam, int *first)
 		if (var_env == data->env)
 			data->env = var_env->next;
 		ft_lstdelone(var_env, free);
+		data->status = 0;
 	}
-	data->status = 0;
 }
 
 void	ft_unset(t_data *data, char **arg)

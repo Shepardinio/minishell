@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_exec.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bince < bince@student.42.fr>               +#+  +:+       +#+        */
+/*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 20:23:24 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/08/08 18:22:21 by bince            ###   ########.fr       */
+/*   Updated: 2024/08/13 08:36:18 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	count_cmd(t_data *data)
 	// printf("nb cmd %d\n", i);
 	return (i);
 }
-//if malloc error quit
+//i changed here
 void	creat_env_char(t_data *data)
 {
 	int		i;
@@ -37,7 +37,7 @@ void	creat_env_char(t_data *data)
 	i = count_list(data->env);
 	env_array = malloc(sizeof(char *) * (i + 1));
 	if (env_array == NULL)
-		return ;/*quitter minishell ?*/
+		return ;
 	tmp_env = data->env;
 	i = 0;
 	while (tmp_env)
@@ -46,7 +46,8 @@ void	creat_env_char(t_data *data)
 		{
 			var_tmp = ft_strjoin("=",tmp_env->value);
 			env_array[i] = ft_strjoin(tmp_env->var, var_tmp);
-			free(var_tmp);
+			if (var_tmp != NULL)
+				free(var_tmp);
 			i++;
 		}
 		tmp_env = tmp_env->next;
@@ -54,7 +55,7 @@ void	creat_env_char(t_data *data)
 	env_array[i] = NULL;
 	data->env_array = env_array;
 }
-
+// i changed here
 char	*get_cmd_path_2(char **arg)
 {
 	char	*pwd;
@@ -69,7 +70,11 @@ char	*get_cmd_path_2(char **arg)
 	else if (arg[0][0] == '.')
 	{
 		pwd = getcwd(NULL, 0);
+		if (pwd == NULL)
+			return (NULL);
 		tmp = ft_strjoin("/", arg[0]);
+		if (tmp == NULL)
+			return (free(pwd), NULL);
 		tmp_path = ft_strjoin(pwd, tmp);
 		free(pwd);
 		free(tmp);
@@ -85,10 +90,8 @@ char	*get_cmd_path(t_data *data, char **arg)
 
 	i = 0;
 
-	// i added this part ---------
 	if (!data->path)
 		return NULL;
-	//------------------------
 	if (arg == NULL || arg[0][0] == '/' || arg[0][0] == '.')
 		return (get_cmd_path_2(arg));
 	cmd = arg[0];

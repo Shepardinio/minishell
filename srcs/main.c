@@ -1,72 +1,113 @@
 #include "../includes/minishell.h"
-
 #include <stdio.h>
-t_nns *nns_init(char *input)
+
+t_signals g_signals = {0};
+
+void print_pipelines(t_all_pipelines *all_pipelines);
+
+void execute_input(char *input, t_data *core)
 {
-	t_nns *nns;
-
-	nns = malloc(sizeof(t_nns));
-	if (nns == NULL)
-		return NULL;
-	nns->name = NULL;
-	nns->newstr = ft_strdup(input);
-	if (!nns->newstr)
-		return NULL;
-	return nns;
-}
-
-t_pipeline *pipeline_init()
-{
-	t_pipeline *pipeline;
-	pipeline = malloc(sizeof(t_pipeline));
-	if (pipeline == NULL)
-		return NULL;
-	pipeline->cmd = NULL;
-	pipeline->infiles = NULL;
-	pipeline->outfiles = NULL;
-	pipeline->here_docs = NULL;
-	pipeline->here_filename = NULL;
-	pipeline->infile_fd = 0;
-	pipeline->outfile_fd = 1;
-	return pipeline;
-}
-
-char *two_signs_handler(char *input)
-{
-	int i;
-	char *new_input;
-	int q_type;
-	new_input = ft_strdup(input);
-
-	q_type = 0;
-	if (!new_input)
-		return NULL;
-	i = 0;
-	while (new_input[i+1])
+	int pipelines_succeed;
+	core->all_pipes = ft_calloc(sizeof(t_all_pipelines), 1);
+	if (core->all_pipes)
 	{
-		q_type = quote_check(new_input[i],q_type);
-		if (new_input[i] == '<' && new_input[i+1] == '<' && q_type == 0)
+		pipelines_succeed = pipelines_creator(core->all_pipes, input);
+		free(input);
+		if (pipelines_succeed == 0)
 		{
-			new_input[i] = -1;
-			new_input[i+1] = ' ';
-		}else if (new_input[i] == '>' && new_input[i+1] == '>' && q_type == 0)
-		{
-			new_input[i] = -2;
-			new_input[i+1] = ' ';
+			ft_putstr_fd("pipeline malloc error\n", 1);
+			free_all_pipelines(core->all_pipes);
 		}
-		else if (new_input[i] == '$' && q_type != 1)
-			new_input[i] = -3;
-		i++;
+		else
+		{
+			// print_pipelines(core->all_pipes);
+            execution(core);
+            free_all_pipelines(core->all_pipes);
+		}
 	}
-	return (new_input);
+	else
+		ft_putstr_fd("pipeline malloc error\n", 1);
 }
 
-void error_exit()
+void exit_handler(t_data *core)
 {
-	exit(-1);
+	int exit_status;
+
+	exit_status = core->status;
+	free_env(&core->env);
+	free_tab(core->path);
+	clear_history();
+	exit(exit_status);
+}
+int	sig_event(void)
+{
+    return (EXIT_SUCCESS);
+}
+
+void	handle_sigint(int sig)
+{
+    (void)sig;
+   	write(STDIN_FILENO, "\n", 1);
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_done = 1;
+	g_signals.cmd_quit = 1;
+}
+
+void signal_init(t_data *core)
+{
+	core->signal = 1;
+	g_signals.cmd_quit = 0;
+	rl_event_hook = sig_event;
+	signal(SIGINT, handle_sigint);
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGTSTP, SIG_IGN);
 }
 
 
+int ms_loop(t_data *core)
+{
+	char *input_raw;
+	int input_raw_check;
+	char *input;
+	g_signals.cmd_quit = 0;
+	input_raw = readline("minishell> ");
+	input_raw_check = input_raw_checks(input_raw, core);
+	if (input_raw_check != 1)
+		return -1;
+	if (input_quote_valid(input_raw) != 0)
+		ft_putstr_fd("(d)quote error\n", 1);
+	else
+	{
+		if (input_raw[0] != '\0')
+		{
+			input = input_prep(input_raw, *core);
+			if (input)
+				execute_input(input, core);
+			else
+				ft_putstr_fd("malloc error.\n",2);
+		}
+	}
+	free(input_raw);
+	return 1;
+}
+
+int	main(int argc, char **argv, char **env)
+{
+	t_data			core;
+
+	(void)argc;
+	(void)argv;
+	(void)env;
+	init_data(&core, env);
+	signal_init(&core);
+	while (core.signal != 0)
+	{
+		if (ms_loop(&core) == -1)
+			break;
+	}
+	exit_handler(&core);
+}
 
 void print_pipelines(t_all_pipelines *all_pipelines)
 {
@@ -109,95 +150,4 @@ void print_pipelines(t_all_pipelines *all_pipelines)
 		i++;
 		printf("--------------------\n");
 	}
-}
-
-int input_quote_valid(char *input)
-{
-	int i;
-	int q_type;
-
-	i = 0;
-	q_type = 0;
-	while (input[i])
-	{
-		q_type = quote_check(input[i], q_type);
-		i++;
-	}
-	return q_type;
-}
-
-int main(int argc, char **argv, char **env)
-{
-	char *input_raw;
-	char *input;
-	(void)argc;
-	(void)argv;
-	(void)env;
-	t_data core;
-	t_all_pipelines *all_pipes;
-	int pipelines_succeed;
-	signal(SIGQUIT, SIG_IGN);
-	init_data(&core, env);
-	core.signal = 1;
-	rl_catch_signals = 0;
-    while (core.signal != 0)
-	{
-        input_raw = readline("minishell> ");
-        if (input_raw == NULL) {
-            ft_putstr_fd("exiting...\n",1);
-			core.signal = 0;
-            break;
-        }
-		// if (is_exit(input_raw) == 0)
-		// {
-		// 	free(input_raw);
-		// 	core.signal = 0;
-		// 	break;
-		// }
-        if (*input_raw) {
-            add_history(input_raw);
-        }
-		if (input_quote_valid(input_raw) != 0)
-		{
-			ft_putstr_fd("(d)quote error\n",1);
-		}
-		else
-		{
-		if (input_raw[0] != '\0')
-		{
-			input = two_signs_handler(input_raw);
-			input = parse_input_args(input,core.env);
-			//ft_putstr_fd(input,2);
-			// if (input == NULL)
-			// {
-			// 	ft_putstr_fd("input null",2;
-			// 	error_exit();
-			// }
-			all_pipes = ft_calloc(sizeof(t_all_pipelines),1);
-			pipelines_succeed = pipelines_creator(all_pipes, input);
-			free(input);
-			if (pipelines_succeed == 0)
-				ft_putstr_fd("pipeline error\n",1);
-			core.all_pipes = all_pipes;
-			execution(&core);
-			// print_pipelines(core.all_pipes);
-			// int i = 0;
-			// printf("PATH\n");
-			// if (core.path == NULL)
-			// 	printf("PATH == NULL\n");
-			// else
-			// {
-			// 	while (core.path[i])
-			// 		printf("%s\n", core.path[i++]);
-			// }
-			printf("status = %d\n", core.status);
-			free(input_raw);
-			free_all_pipelines(all_pipes);
-		}
-		}
-	}
-	free_env(&(core.env));
-	free_tab(core.path);
-	//free_all_pipelines(all_pipes);
-    clear_history();
 }

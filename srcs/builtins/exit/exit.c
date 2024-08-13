@@ -6,7 +6,7 @@
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 18:34:46 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/08/12 23:47:21 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/08/13 04:16:11 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ void	ft_exit(t_data *data, char **arg)
 	long long int	err;
 
 	nb_arg = count_str(arg);
-	ft_putstr_fd("exit\n", 2);
 	if (nb_arg == 1)
 		free_exit(data, EXIT_SUCCESS);
 	else
@@ -64,11 +63,12 @@ void	ft_exit(t_data *data, char **arg)
 		else
 		{
 			err = ft_atoi(arg[1]);
-			// printf("nb = %s, err = %lld\n", arg[i], err);
 			if (err < 0)
 				data->status = 256 - ((err * -1) % 256);
 			else
 				data->status = err % 256;
+			ft_putstr_fd("exit\n", 2);
+			free_exit(data,data->status);
 		}
 	}
 }

@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bince < bince@student.42.fr>               +#+  +:+       +#+        */
+/*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 16:39:00 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/08/04 17:41:47 by bince            ###   ########.fr       */
+/*   Updated: 2024/08/13 04:52:27 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
-
-void	ft_env(t_list *env, char **cmd)
+//i changed here
+void	ft_env(t_data *data, t_list *env, char **cmd)
 {
 	if (cmd != NULL && cmd[1] != NULL)
 	{
 		ft_putstr_fd("env does not take arguments\n", 2);
-		/*Change status to 127*/
+		data->status = 127;
 		return ;
 	}
 	while (env)

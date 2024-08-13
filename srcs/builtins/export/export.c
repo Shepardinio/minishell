@@ -6,7 +6,7 @@
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/04 17:45:22 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/08/12 16:06:28 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/08/13 09:08:58 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,12 +74,13 @@ void	export_var(t_data *data, char *arg)
 		set_datapath(data, tmp);
 	free_tab(tmp);
 }
-
+//i changed here
 void	ft_export(t_data *data, char **arg)
 {
 	int	i;
 
 	i = 1;
+	data->status = 0;
 	if (arg[i])
 	{
 		while (arg[i])

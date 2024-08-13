@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bince < bince@student.42.fr>               +#+  +:+       +#+        */
+/*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 23:07:53 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/08/04 17:41:44 by bince            ###   ########.fr       */
+/*   Updated: 2024/08/13 04:52:24 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
-
-void	ft_echo(char **arg)
+//i changed here
+void	ft_echo(t_data *data, char **arg)
 {
 	int	i;
 	int n;
@@ -38,5 +38,5 @@ void	ft_echo(char **arg)
 	}
 	if (n == 0)
 		ft_putchar_fd('\n', 1);
-	/*STATUS == 0*/
+	data->status = 0;
 }

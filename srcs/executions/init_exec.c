@@ -6,17 +6,17 @@
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 19:08:42 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/08/12 18:46:39 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/08/13 09:28:11 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
 void	wait_child(t_data *data, pid_t exit_status, int nb_process)
 {
 	int		status;
 	pid_t	child_pid;
 	int		i;
+	int term_sig;
 
 	i = 0;
 	while (i < nb_process)
@@ -26,6 +26,15 @@ void	wait_child(t_data *data, pid_t exit_status, int nb_process)
 		{
 			if (WIFEXITED(status))
 				data->status = WEXITSTATUS(status);
+			else if (WIFSIGNALED(status))
+			{
+				term_sig = WTERMSIG(status);
+
+				if (term_sig == SIGINT)
+					data->status = 128 + SIGINT;
+				else
+					data->status = 128 + term_sig;
+			}
 		}
 		i++;
 	}
@@ -51,19 +60,27 @@ void	exec_cmd(t_data *data, char **arg)
 	ft_putstr_fd(": command not found\n", 2);
 	free_exit(data, 127);
 }
-
+//i changed here
 void	child(t_data *data)
 {
-	if (dup2(data->all_pipes->pipelines[data->index]->infile_fd, READ) == -1)
-		return (perror("Minishell: Error"));
-	if (dup2(data->all_pipes->pipelines[data->index]->outfile_fd, WRITE) == -1)
-		return (perror("Minishell: Error"));
+	if (data->all_pipes->pipelines[data->index]->infile_fd == -1)
+		free_exit(data, EXIT_FAILURE);
+	else
+	{
+		if (dup2(data->all_pipes->pipelines[data->index]->infile_fd, READ) == -1)
+			return (perror("Minishell: Error"));
+	}
+	if (data->all_pipes->pipelines[data->index]->outfile_fd == -1)
+		free_exit(data, EXIT_FAILURE);
+	else
+	{
+		if (dup2(data->all_pipes->pipelines[data->index]->outfile_fd, WRITE) == -1)
+			return (perror("Minishell: Error"));
+	}
 	close_all_pipe(data->all_pipes);
 	if (exec_builtins(data, data->all_pipes->pipelines[data->index]) == 1)
 	{
-		// I CHANGED HERE
 		free_exit(data,127);
-		// ------------------
 		return ;
 	}
 	exec_cmd(data, data->all_pipes->pipelines[data->index]->cmd);
