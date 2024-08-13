@@ -6,7 +6,7 @@
 /*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 02:23:28 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/08/13 17:06:30 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/08/13 18:33:17 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,18 +25,22 @@ char	*get_pathfile(char *filename)
 	pwd = getcwd(NULL, 0);
 	if (pwd == NULL)
 		return (NULL);
-	tmp = ft_strjoin("/", filename);
+	tmp = NULL;//ft_strjoin("/", filename);
 	if (tmp == NULL)
-		return (NULL);
+		return (free(pwd), NULL);
 	filepath = ft_strjoin(pwd, tmp);
 	if (filepath == NULL)
+	{
+		free(pwd);
+		free(tmp);
 		return (NULL);
+	}
 	free(pwd);
 	free(tmp);
 	return (filepath);
 }
 
-void	file_error(t_pipeline *node, char *filepath, int err)
+int	file_error(t_pipeline *node, char *filepath, int err)
 {
 	if (err == 1)
 	{
@@ -50,7 +54,7 @@ void	file_error(t_pipeline *node, char *filepath, int err)
 	}
 }
 
-void	open_infile(t_pipeline *node)
+int	open_infile(t_pipeline *node)
 {
 	int		i;
 	int		fd;
@@ -79,7 +83,7 @@ void	open_infile(t_pipeline *node)
 	}
 }
 
-void	open_outfile(t_pipeline *node)
+int	open_outfile(t_pipeline *node)
 {
 	int		i;
 	int		fd;
@@ -100,6 +104,7 @@ void	open_outfile(t_pipeline *node)
 		}
 		i++;
 	}
+	return (0);
 }
 
 int	open_file(t_data *data)
@@ -118,6 +123,7 @@ int	open_file(t_data *data)
 			open_infile(data->all_pipes->pipelines[i]);
 		if (data->all_pipes->pipelines[i]->outfiles[0] != NULL)
 			open_outfile(data->all_pipes->pipelines[i]);
+
 		i++;
 	}
 	return (0);

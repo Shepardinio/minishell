@@ -6,7 +6,7 @@
 /*   By: bince < bince@student.42.fr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 06:44:34 by bince             #+#    #+#             */
-/*   Updated: 2024/08/13 12:30:49 by bince            ###   ########.fr       */
+/*   Updated: 2024/08/13 15:34:39 by bince            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	**error_2(char **tokens)
 
 void	error_empty_pipe(t_data *core)
 {
-	core->status = 1;
+	core->status = 2;
 	ft_putstr_fd("parse error near |.\n", 2);
 }
 
