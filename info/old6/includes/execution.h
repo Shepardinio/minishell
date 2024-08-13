@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bince < bince@student.42.fr>               +#+  +:+       +#+        */
+/*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/19 17:14:15 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/08/13 19:46:17 by bince            ###   ########.fr       */
+/*   Updated: 2024/08/13 17:21:06 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,5 @@ void	close_pipe(int pipe[2]);
 void	close_all_pipe(t_all_pipelines *all_pipes);
 void	creat_pipe(t_pipeline **node);
 void	std_handler(t_pipeline **node, int nb_process);
-int		free_fp_inc_i(int i, char *filepath);
-char	*fp_fd_init(int *fd);
-char	*filepath_init(char *filepath, int *fd, int i, t_pipeline *node);
+
 #endif

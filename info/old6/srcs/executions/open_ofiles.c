@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   open_ofiles.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bince < bince@student.42.fr>               +#+  +:+       +#+        */
+/*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 12:37:44 by bince             #+#    #+#             */
-/*   Updated: 2024/08/13 19:36:45 by bince            ###   ########.fr       */
+/*   Updated: 2024/08/13 18:29:57 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@ int	open_outfile_0(t_pipeline *node, char *filepath, int fd, int i)
 	fd = -1;
 	filepath = get_pathfile(node->outfiles[i]);
 	node->outfiles[i]--;
-	if (!filepath)
-		return (-1);
 	if (access(filepath, W_OK) == 0 || access(filepath, F_OK) == -1)
 	{
 		fd = open(filepath, O_WRONLY | O_CREAT | O_TRUNC, 0666);
@@ -29,10 +27,10 @@ int	open_outfile_0(t_pipeline *node, char *filepath, int fd, int i)
 		else if (fd != -1)
 			close(fd);
 		else if (fd == -1)
-			return (free(filepath), -1);
+			return (free(filepath), EXIT_FAILURE);
 	}
 	else
-		return (free(filepath), -1);
+		return (free(filepath), EXIT_FAILURE);
 	free(filepath);
 	return (EXIT_SUCCESS);
 }
@@ -44,8 +42,6 @@ int	open_outfile_x(t_pipeline *node, char *filepath, int fd, int i)
 	fd = -1;
 	filepath = get_pathfile(node->outfiles[i]);
 	node->outfiles[i]--;
-	if (filepath == NULL)
-		return (-1);
 	if (access(filepath, W_OK) == 0 || access(filepath, F_OK) == -1)
 	{
 		fd = open(filepath, O_WRONLY | O_CREAT | O_APPEND, 0666);
@@ -54,10 +50,10 @@ int	open_outfile_x(t_pipeline *node, char *filepath, int fd, int i)
 		else if (fd != -1)
 			close(fd);
 		else if (fd == -1)
-			return (free(filepath), -1);
+			return (free(filepath), EXIT_FAILURE);
 	}
 	else
-		return (free(filepath), -1);
+		return (free(filepath), EXIT_FAILURE);
 	free(filepath);
 	return (EXIT_SUCCESS);
 }

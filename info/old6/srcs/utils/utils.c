@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bince < bince@student.42.fr>               +#+  +:+       +#+        */
+/*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 12:45:21 by bince             #+#    #+#             */
-/*   Updated: 2024/08/13 19:36:17 by bince            ###   ########.fr       */
+/*   Updated: 2024/08/13 18:22:33 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ t_list	*find(t_data *data, char *varname)
 	}
 	return (NULL);
 }
-
 char	*put_str_in_str_utils(char *dest, char *parsed_str, int j)
 {
 	free(dest);
