@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_exec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bince < bince@student.42.fr>               +#+  +:+       +#+        */
+/*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 19:08:42 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/09/18 16:27:02 by bince            ###   ########.fr       */
+/*   Updated: 2024/08/13 18:14:38 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,13 +68,8 @@ int	launch_cmd(t_data *data, int nb_process)
 	while (tmp[i] && exit_status != -1 && i < nb_process)
 	{
 		data->index = i;
-		// bince changed here
-		if (tmp[i]->cmd[0] == NULL)
-			tmp[i]->pid = 0;
-		else
-			tmp[i]->pid = start_exec(data);
+		tmp[i]->pid = start_exec(data);
 		exit_status = tmp[i]->pid;
-		/////////////
 		i++;
 	}
 	return (exit_status);
