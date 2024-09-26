@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bince < bince@student.42.fr>               +#+  +:+       +#+        */
+/*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 20:21:46 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/08/04 17:41:50 by bince            ###   ########.fr       */
+/*   Updated: 2024/09/27 01:13:57 by mel-yand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,60 @@ int	valid_name(t_data *data, char *arg)
 		i++;
 	}
 	return (1);
+}
+
+// mel_yand changed here
+
+void	print_variable(t_list *node)
+{
+	ft_putstr_fd("declare -x ", 1);
+	ft_putstr_fd(node->var, 1);
+	if (node->value)
+	{
+		ft_putstr_fd("=\"", 1);
+		ft_putstr_fd(node->value, 1);
+		ft_putstr_fd("\"", 1);
+	}
+	ft_putstr_fd("\n", 1);
+}
+
+int	compare_vars(t_list *a, t_list *b)
+{
+	int	i;
+
+	i = 0;
+	while (a->var[i] && b->var[i] && a->var[i] == b->var[i])
+		i++;
+	return (a->var[i] - b->var[i]);
+}
+
+t_list	*find_min(t_list *env, t_list *last_min)
+{
+	t_list	*min;
+	t_list	*current;
+
+	min = NULL;
+	current = env;
+	while (current)
+	{
+		if ((!min || compare_vars(current, min) < 0) && (!last_min || compare_vars(current, last_min) > 0))
+			min = current;
+		current = current->next;
+	}
+	return (min);
+}
+
+void	export_no_args(t_list *env)
+{
+	t_list	*min;
+	t_list	*current;
+
+	if (!env)
+		return ;
+	current = NULL;
+	while ((min = find_min(env, current)))
+	{
+		print_variable(min);
+		current = min;
+	}
 }
