@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bince < bince@student.42.fr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/01 23:07:53 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/09/27 01:16:10 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/09/27 11:54:50 by bince            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,14 @@ int	get_outfile(t_data *data)
 	return (data->all_pipes->pipelines[data->index]->outfile_fd);
 }
 
-// mel-yand changed here
-void check_echo_arg(char **arg, int *i, int *n) 
+void	check_echo_arg(char **arg, int *i, int *n)
 {
 	int	j;
 
 	while (arg[*i])
 	{
 		j = 0;
-		if (arg[*i][j] == '-' && arg[*i][j + 1] == 'n') 
+		if (arg[*i][j] == '-' && arg[*i][j + 1] == 'n')
 		{
 			j += 2;
 			while (arg[*i][j] && (arg[*i][j] == 'n' || arg[*i][j] == 'e'))
@@ -36,10 +35,10 @@ void check_echo_arg(char **arg, int *i, int *n)
 				(*i)++;
 			}
 			else
-				break;
+				break ;
 		}
 		else
-			break;
+			break ;
 	}
 }
 

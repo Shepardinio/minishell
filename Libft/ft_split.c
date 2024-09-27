@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bince < bince@student.42.fr >              +#+  +:+       +#+        */
+/*   By: bince < bince@student.42.fr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 19:39:18 by bince             #+#    #+#             */
-/*   Updated: 2023/11/13 14:27:52 by bince            ###   ########.fr       */
+/*   Updated: 2024/08/13 11:57:56 by bince            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,19 +106,3 @@ char	**ft_split(char const *str, char set)
 	fill_words(array, (char *)str, set);
 	return (array);
 }
-// #include <stdio.h>
-// int main()
-// {
-// 	char **split = ft_split("  tripouille  42  ", ' ');
-
-// 	int i = 0;
-// 	while (split[i] != NULL)
-// 	{
-// 		printf("%s\n", split[i]);
-// 		i++;
-// 	}
-// 	if (split[i] == NULL)
-// 	{
-// 		printf("NULL");
-// 	}
-// }

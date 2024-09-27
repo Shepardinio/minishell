@@ -1,42 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   export_utils1.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bince < bince@student.42.fr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/01 23:07:53 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/08/04 17:41:44 by bince            ###   ########.fr       */
+/*   Created: 2024/09/27 11:53:40 by bince             #+#    #+#             */
+/*   Updated: 2024/09/27 11:53:42 by bince            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
 
-void	ft_echo(char **arg)
+int	print_error_export(t_data *data, char *varname)
 {
-	int	i;
-	int n;
-
-	i = 1;
-	n = 0;
-	if (arg[1] == NULL)
+	if (varname[0] == '-')
 	{
-		ft_putchar_fd('\n', 1);
-		return ;
+		ft_putstr_fd("Minishell: export: -", 2);
+		ft_putchar_fd(varname[1], 2);
+		ft_putstr_fd(": invalid option\n", 2);
+		data->status = 2;
 	}
-	while (arg[i] && ft_strncmp(arg[i], "-n", 3) == 0)
+	else
 	{
-		i++;
-		n++;
+		ft_putstr_fd("Minishell: export: ", 2);
+		ft_putstr_fd(varname, 2);
+		ft_putstr_fd(": not a valid identifier\n", 2);
+		data->status = 1;
 	}
-	while (arg[i])
-	{
-		ft_putstr_fd(arg[i], 1);
-		if (arg[i] && arg[i + 1])
-			ft_putchar_fd(' ', 1);
-		i++;
-	}
-	if (n == 0)
-		ft_putchar_fd('\n', 1);
-	/*STATUS == 0*/
+	return (0);
 }

@@ -3,33 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-yand <mel-yand@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bince < bince@student.42.fr>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 20:21:46 by mel-yand          #+#    #+#             */
-/*   Updated: 2024/09/27 01:13:57 by mel-yand         ###   ########.fr       */
+/*   Updated: 2024/09/27 11:57:14 by bince            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
-
-int	print_error_export(t_data *data, char *varname)
-{
-	if (varname[0] == '-')
-	{
-		ft_putstr_fd("Minishell: export: -", 2);
-		ft_putchar_fd(varname[1], 2);
-		ft_putstr_fd(": invalid option\n", 2);
-		data->status = 2;
-	}
-	else
-	{
-		ft_putstr_fd("Minishell: export: ", 2);
-		ft_putstr_fd(varname, 2);
-		ft_putstr_fd(": not a valid identifier\n", 2);
-		data->status = 1;
-	}
-	return (0);
-}
 
 int	valid_name(t_data *data, char *arg)
 {
@@ -48,8 +29,6 @@ int	valid_name(t_data *data, char *arg)
 	}
 	return (1);
 }
-
-// mel_yand changed here
 
 void	print_variable(t_list *node)
 {
@@ -83,7 +62,8 @@ t_list	*find_min(t_list *env, t_list *last_min)
 	current = env;
 	while (current)
 	{
-		if ((!min || compare_vars(current, min) < 0) && (!last_min || compare_vars(current, last_min) > 0))
+		if ((!min || compare_vars(current, min) < 0) && (!last_min
+				|| compare_vars(current, last_min) > 0))
 			min = current;
 		current = current->next;
 	}
@@ -98,9 +78,11 @@ void	export_no_args(t_list *env)
 	if (!env)
 		return ;
 	current = NULL;
-	while ((min = find_min(env, current)))
+	min = find_min(env, current);
+	while (min)
 	{
 		print_variable(min);
 		current = min;
+		min = find_min(env, current);
 	}
 }
